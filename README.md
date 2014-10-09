@@ -6,7 +6,7 @@ This module is intended for Puppet standalone installation of [NeuroVault](https
 ###Installation Instructions:
 
 
-1. Before you begin, create a server or virtual machine with _Ubuntu 14 Server 64-bit _.  If you use a guided installation with installation media, don't install any packages except `openssh-server`.  Configure host name, networking, and perform server hardening for your environment as needed.  Be sure to have an account with administrative access (sudo).
+1. Before you begin, create a server or virtual machine with __Ubuntu 14 Server 64-bit__.  If you use a guided installation with installation media, you don't need to install any packages except `openssh-server`.  Configure host name, networking, and server hardening for your environment as needed.  Be sure to have an account with administrative access (sudo).
 
 
 2. Install Puppet, Git and Ruby packages, and update your operating system:
@@ -27,7 +27,7 @@ This module is intended for Puppet standalone installation of [NeuroVault](https
 
 4) Edit `/etc/puppet/modules/confs/nvault.pp` with settings to match your desired server environment.  The configurable values are described in the inline comments below:
 
-```
+```ruby
 neurovault::main { 'nvault-install':
 
   # location of Python virtual environment:
