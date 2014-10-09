@@ -14,34 +14,25 @@ define neurovault::nginx (
 
   $wsgi_port = "8088"
 
-  package { "gunicorn":
-      ensure => "removed"
-      #ensure => "installed"
-  } ->
-
-  # python::gunicorn { $host_name:
-  #   ensure      => present,
-  #   virtualenv  => $env_path,
-  #   mode        => 'django',
-  #   owner        => $system_user,
-  #   group       => $system_user,
-  #   dir         => $app_path,
-  #   bind        => '127.0.0.1:8088',
-  # }
-
   class { "uwsgi": }
 
-  uwsgi::resource::app { "django":
+  uwsgi::resource::app { "neurovault-uwsgi":
     options => {
-      "socket"    => "127.0.0.1:$wsgi_port",
+      #"socket"    => "127.0.0.1:$wsgi_port",
+      "http"    => "127.0.0.1:$wsgi_port",
       "master"    => "true",
-      "plugin"    => "python",
+      "uid"       => $system_user,
+      "gid"       => $system_user,
       "vhost"     => "true",
       "processes" => "4",
-      "pythonpath"=> "/opt/nv-env",
       "wsgi-file" => "$app_path/neurovault/wsgi.py",
       "virtualenv"=> $env_path,
-      "logto"     => "/var/log/$host_name-uwsgi.log",
+      "logto"     => "/var/log/uwsgi/neurovault-uwsgi.log",
+
+
+      #"pythonpath"=> "/opt/nv-env/NeuroVault",
+      #"env"       => "DJANGO_SETTINGS_MODULE=neurovault.settings",
+      #"module"    => "django.core.handlers.wsgi:WSGIHandler()".
     }
   }
 
@@ -57,7 +48,7 @@ define neurovault::nginx (
   nginx::resource::upstream { 'neurovault-uwsgi':
     ensure  => present,
     members => [
-      '127.0.0.1:$wsgi_port'
+      "127.0.0.1:$wsgi_port"
     ],
   }
 
