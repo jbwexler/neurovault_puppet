@@ -5,7 +5,11 @@ define neurovault::http (
   $host_name,
   $system_user,
   $tmp_dir,
-  $http_server
+  $http_server,
+  $private_media_root,
+  $media_root,
+  $private_media_url,
+  $media_url
 )
 
 {
@@ -19,7 +23,11 @@ define neurovault::http (
       host_name => $host_name,
       system_user => $system_user,
       tmp_dir => $tmp_dir,
-      http_server => $http_server
+      http_server => $http_server,
+      private_media_root => $private_media_root,
+      media_root => $media_root,
+      private_media_url => $private_media_url,
+      media_url => $media_url,
     }
 
   } elsif $http_server == 'apache' {
@@ -31,7 +39,7 @@ define neurovault::http (
       host_name => $host_name,
       system_user => $system_user,
       tmp_dir => $tmp_dir,
-      http_server => $http_server
+      http_server => $http_server,
     }
 
   }

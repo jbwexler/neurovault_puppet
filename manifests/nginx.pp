@@ -5,34 +5,39 @@ define neurovault::nginx (
   $host_name,
   $system_user,
   $tmp_dir,
-  $http_server
+  $http_server,
+  $private_media_root,
+  $media_root,
+  $private_media_url,
+  $media_url,
 )
 
 {
 
- # config nginx / gunicorn
+ # config nginx / uwsgi
 
-  $wsgi_port = "8088"
+  $socket_path = "/tmp/neurovault.sock"
 
   class { "uwsgi": }
 
-  uwsgi::resource::app { "neurovault-uwsgi":
+  uwsgi::resource::app { $host_name:
     options => {
-      #"socket"    => "127.0.0.1:$wsgi_port",
-      "http"    => "127.0.0.1:$wsgi_port",
-      "master"    => "true",
-      "uid"       => $system_user,
-      "gid"       => $system_user,
-      "vhost"     => "true",
-      "processes" => "4",
-      "wsgi-file" => "$app_path/neurovault/wsgi.py",
-      "virtualenv"=> $env_path,
-      "logto"     => "/var/log/uwsgi/neurovault-uwsgi.log",
+      "socket"           => $socket_path,
+      "master"           => "true",
+      "vhost"            => "true",
+      "processes"        => "8",
+      "threads"          =>  "8",
+      "post-buffering"   =>"true",
+      "log-date"         => "true",
+      "daemonize"        => "/var/log/uwsgi/$host_name.log",
+      "pidfile"          => "/tmp/neurovault-uwsgi.pid",
+      "harakiri"         => "20",
+      "harakiri-verbose" => "true",
+      "max-requests"     => "5000",
+      "virtualenv"       => $env_path,
+      "chdir"            => $app_path,
+      "module"           => "neurovault.wsgi",
 
-
-      #"pythonpath"=> "/opt/nv-env/NeuroVault",
-      #"env"       => "DJANGO_SETTINGS_MODULE=neurovault.settings",
-      #"module"    => "django.core.handlers.wsgi:WSGIHandler()".
     }
   }
 
@@ -42,21 +47,25 @@ define neurovault::nginx (
     ensure                => present,
     listen_port           => 80,
     www_root              => '/var/www',
-    use_default_location => false
+    use_default_location => false,
+    client_max_body_size => '1024M',
   }
 
   nginx::resource::upstream { 'neurovault-uwsgi':
     ensure  => present,
     members => [
-      "127.0.0.1:$wsgi_port"
+      "unix:$socket_path",
     ],
   }
 
   nginx::resource::location { 'root':
-    ensure          => present,
-    vhost           => $host_name,
-    location        => '/',
-    proxy           => 'http://neurovault-uwsgi',
+  ensure                    => present,
+    vhost                   => $host_name,
+    location                => '/',
+    location_custom_cfg  => {
+      'uwsgi_pass' => 'neurovault-uwsgi',
+      'include'    => 'uwsgi_params',
+    }
   }
 
   nginx::resource::location { 'static':
@@ -69,17 +78,22 @@ define neurovault::nginx (
   nginx::resource::location { 'pub-media':
     ensure          => present,
     vhost           => $host_name,
-    location        => '/pub/media',
-    location_alias           => "$app_path/neurovault/pub-media",
+    location        => $media_url,
+    location_alias           => $media_root,
   }
 
   nginx::resource::location { 'secure-media':
     ensure          => present,
     vhost           => $host_name,
     internal        => true,
-    location        => '/private/media/images',
-    location_alias  => "$app_path/image_data/images",
+    location        => "/private$private_media_url",
+    location_alias  => "$private_media_root/images",
   }
 
+  exec { 'nginx_set_boot':
+    command         => "update-rc.d nginx defaults",
+    path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+    returns         => [0,1],
+  }
 
 }

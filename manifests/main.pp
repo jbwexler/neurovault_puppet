@@ -4,6 +4,7 @@ define neurovault::main (
   $db_name,
   $db_username,
   $db_userpassword,
+  $db_existing_sql,
   $app_url,
   $host_name,
   $system_user,
@@ -12,7 +13,19 @@ define neurovault::main (
   $neurodeb_list,
   $neurodeb_sources,
   $neurodeb_apt_key,
-  $http_server
+  $http_server,
+  $dbbackup_storage,
+  $dbbackup_tokenpath,
+  $dbbackup_appkey,
+  $dbbackup_secret,
+  $start_debug,
+  $private_media_root,
+  $private_media_url,
+  $private_media_existing,
+  $media_root,
+  $media_url,
+  $media_existing,
+  $gmail_login_str,
 )
 
 {
@@ -187,12 +200,7 @@ define neurovault::main (
     forceupdate => true,
   } ->
 
-  # config database
-
-  postgresql::server::db { $db_name:
-    user => $db_username,
-    password => $db_userpassword
-  } ->
+  # Set up HTTP and WSGI
 
   neurovault::http { 'httpd config':
     env_path => $env_path,
@@ -201,11 +209,59 @@ define neurovault::main (
     host_name => $host_name,
     system_user => $system_user,
     tmp_dir => $tmp_dir,
-    http_server => $http_server
+    http_server => $http_server,
+    private_media_root => $private_media_root,
+    media_root => $media_root,
+    private_media_url => $private_media_url,
+    media_url => $media_url,
+  } ->
+
+  # config Django
+
+  neurovault::django  { 'django_appsetup':
+    env_path => $env_path,
+    app_path => $app_path,
+    app_url => $app_url,
+    host_name => $host_name,
+    system_user => $system_user,
+    http_server => $http_server,
+    db_name => $db_name,
+    db_username => $db_username,
+    db_userpassword => $db_userpassword,
+    dbbackup_storage => $dbbackup_storage,
+    dbbackup_tokenpath => $dbbackup_tokenpath,
+    dbbackup_appkey => $dbbackup_appkey,
+    dbbackup_secret => $dbbackup_secret,
+    start_debug     => $start_debug,
+    private_media_root => $private_media_root,
+    private_media_url => $private_media_url,
+    private_media_existing => $private_media_existing,
+    media_root => $media_root,
+    media_url => $media_url,
+    media_existing => $media_existing,
+  } ->
+
+  # config database
+
+  postgresql::server::db { $db_name:
+    user => $db_username,
+    password => $db_userpassword
+  } ->
+
+  neurovault::database { 'setup_db':
+    env_path => $env_path,
+    app_path => $app_path,
+    system_user => $system_user,
+    db_name => $db_name,
+    db_username => $db_username,
+    db_userpassword => $db_userpassword,
+    db_existing_sql => $db_existing_sql,
+  } ->
+
+  #config outgoing mailer
+
+  neurovault::smtpd { 'setup_postfix':
+    host_name => $host_name,
+    gmail_login_str => $gmail_login_str,
   }
-
-  # TODO: config settings file (needs MEDIA_URL)
-  # TODO: collectstatic
-  # TODO: fix wsgi file with virtualenv
-
 }

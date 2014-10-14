@@ -5,7 +5,7 @@ define neurovault::nginx (
   $host_name,
   $system_user,
   $tmp_dir,
-  $http_server
+  $http_server,
 )
 
 {

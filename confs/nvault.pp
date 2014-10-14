@@ -3,6 +3,7 @@ neurovault::main { 'nvault-install':
   db_name => "neurovault",
   db_username => "neurovault",
   db_userpassword => "neurovault",
+  db_existing_sql => "/home/grivera/nv-backup.sql",
   app_url => "http://nvault.infocortex.de",
   host_name => "nvault.infocortex.de",
   system_user => "grivera",
@@ -11,5 +12,18 @@ neurovault::main { 'nvault-install':
   neurodeb_list => "http://neuro.debian.net/lists/trusty.de-m.libre",
   neurodeb_sources => "sudo tee /etc/apt/sources.list.d/neurodebian.sources.list",
   neurodeb_apt_key => "hkp://pgp.mit.edu:80 2649A5A9",
-  http_server => "nginx"
+  http_server => "nginx",
+  dbbackup_storage =>"dbbackup.storage.dropbox_storage",
+  dbbackup_tokenpath =>"<local_tokens_filepath>",
+  dbbackup_appkey =>"<dropbox_app_key>",
+  dbbackup_secret =>"<dropbox_app_secret>",
+  start_debug =>"true",
+  private_media_root => "/opt/nv-env/NeuroVault/image_data",
+  private_media_url => "/media/images",
+  private_media_existing => "/home/grivera/neurovault_testdata/image_data",
+  media_root => "/opt/nv-env/NeuroVault/neurovault/media",
+  media_url => "/public/media",
+  media_existing => "/home/grivera/neurovault_testdata/pub-media",
+  gmail_login_str => "system-notify@infocortex.com:themailpasswd",
+
 }
