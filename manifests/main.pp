@@ -26,6 +26,17 @@ define neurovault::main (
   $media_url,
   $media_existing,
   $gmail_login_str,
+  $freesurfer_dl_path,
+  $freesurfer_src,
+  $freesurfer_installdir,
+  $freesurfer_lic_email,
+  $freesurfer_lic_id,
+  $freesurfer_lic_key,
+  $bash_config_loc,
+  $pycortex_repo,
+  $pycortex_branch,
+  $pycortex_data_dir,
+  $pycortex_existing_subject,
 )
 
 {
@@ -179,20 +190,6 @@ define neurovault::main (
     ensure => present
   } ->
 
-  # manually install pycortex (pip packaging is broken)
-  exec { "clone-pycortex":
-    command => "git clone https://github.com/gallantlab/pycortex.git",
-    creates => "$tmp_dir/pycortex",
-    user => $system_user,
-    cwd => $tmp_dir
-  } ->
-
-  exec { "build-pycortex":
-    command => "$env_path/bin/python setup.py install",
-    user => $system_user,
-    cwd => "$tmp_dir/pycortex"
-  } ->
-
   python::requirements { "$app_path/requirements.txt":
     virtualenv => $env_path,
     owner => $system_user,
@@ -258,10 +255,36 @@ define neurovault::main (
     db_existing_sql => $db_existing_sql,
   } ->
 
-  #config outgoing mailer
+  # config outgoing mailer
 
   neurovault::smtpd { 'setup_postfix':
     host_name => $host_name,
     gmail_login_str => $gmail_login_str,
+  } ->
+
+  # install Freesurfer
+
+  neurovault::freesurfer { 'install_freesurfer':
+    tmp_dir => $tmp_dir,
+    freesurfer_dl_path => $freesurfer_dl_path,
+    freesurfer_src => $freesurfer_src,
+    freesurfer_installdir => $freesurfer_installdir,
+    freesurfer_lic_email => $freesurfer_lic_email,
+    freesurfer_lic_id => $freesurfer_lic_id,
+    freesurfer_lic_key => $freesurfer_lic_key,
+    bash_config_loc => $bash_config_loc,
+    system_user => $system_user,
+  } ->
+
+  neurovault::pycortex { 'install_pycortex':
+    tmp_dir => $tmp_dir,
+    env_path => $env_path,
+    system_user => $system_user,
+    app_path => $app_path,
+    pycortex_repo => $pycortex_repo,
+    pycortex_branch => $pycortex_branch,
+    pycortex_data_dir => $pycortex_data_dir,
+    pycortex_existing_subject => $pycortex_existing_subject,
   }
+
 }

@@ -21,9 +21,20 @@ neurovault::main { 'nvault-install':
   private_media_root => "/opt/nv-env/NeuroVault/image_data",
   private_media_url => "/media/images",
   private_media_existing => "/home/grivera/neurovault_testdata/image_data",
-  media_root => "/opt/nv-env/NeuroVault/neurovault/media",
-  media_url => "/public/media",
+  media_root => "/opt/nv-env/NeuroVault/neurovault/media/",
+  media_url => "/public/media/",  # must end in a trailing slash
   media_existing => "/home/grivera/neurovault_testdata/pub-media",
   gmail_login_str => "system-notify@infocortex.com:themailpasswd",
+  freesurfer_dl_path => "ftp://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/5.3.0",
+  freesurfer_src => "freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz",
+  freesurfer_installdir => "/opt",
+  freesurfer_lic_email => "freesurfer_email@yourdomain.com",
+  freesurfer_lic_id => "00000",
+  freesurfer_lic_key => " fs_lic_passwd_", # note leading space.
+  bash_config_loc => "/etc/profile.d/freesurfer.sh",
+  pycortex_repo => "https://github.com/gallantlab/pycortex.git",
+  pycortex_branch => "master",
+  pycortex_data_dir => "/opt/nv-env/NeuroVault/pycortex-newdata",
+  pycortex_existing_subject => "/home/grivera/fsaverage",
 
 }

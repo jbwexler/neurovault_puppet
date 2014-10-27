@@ -130,7 +130,6 @@ define neurovault::django (
     mode        => "775",
   }
 
-
   if $start_debug == 'true' {
       file_line { "set_django_debug":
         path  => "$app_path/neurovault/settings.py",
