@@ -190,7 +190,7 @@ define neurovault::main (
 
   # Temp: comment pycortex from requirements, we build it manually,
   # since the pypi packaging/dependency resolution is broken (like numpy,scipy, etc)
-  file { "$app_path/temp_requirements.txt":
+  file { "$tmp_dir/temp_requirements.txt":
     owner => $system_user,
     group => $system_user,
     mode => 644,
@@ -200,18 +200,18 @@ define neurovault::main (
 
   # Django 1.7 is pretty much required now (migrations, cli scripts)
   file_line { "change_djangoversion_reqs":
-    path  => "$app_path/temp_requirements.txt",
+    path  => "$tmp_dir/temp_requirements.txt",
     line  => "Django==1.7",
     match => "^Django<?>?={0,2}.*$",
   } ->
 
   file_line { "comment_pycortex_from_reqs":
-    path  => "$app_path/temp_requirements.txt",
+    path  => "$tmp_dir/temp_requirements.txt",
     line  => "#pycortex",
     match => "^#?pycortex$",
   } ->
 
-  python::requirements { "$app_path/temp_requirements.txt":
+  python::requirements { "$tmp_dir/temp_requirements.txt":
     virtualenv => $env_path,
     owner => $system_user,
     group => $system_user,
