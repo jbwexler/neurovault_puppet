@@ -16,9 +16,6 @@ define neurovault::django (
     $private_media_root,
     $private_media_url,
     $private_media_existing,
-    $media_root,
-    $media_url,
-    $media_existing,
 )
 
 {
@@ -44,18 +41,6 @@ define neurovault::django (
     path  => "$app_path/neurovault/settings.py",
     line  => "PRIVATE_MEDIA_URL = '$private_media_url'",
     match => "^PRIVATE_MEDIA_URL.*$",
-  } ->
-
-  file_line { "media_root":
-    path  => "$app_path/neurovault/settings.py",
-    line  => "MEDIA_ROOT = '$media_root'",
-    match => "^MEDIA_ROOT.*$",
-  } ->
-
-  file_line { "media_url":
-    path  => "$app_path/neurovault/settings.py",
-    line  => "MEDIA_URL = '$media_url'",
-    match => "^MEDIA_URL.*$",
   } ->
 
   # config db settings
@@ -96,21 +81,9 @@ define neurovault::django (
     path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
-  exec { 'move_public_media':
-    command     => "mv $media_existing $media_root",
-    onlyif      => ["test -d $media_existing","test ! -d $media_root"],
-    path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  } ->
-
   exec { 'chown_private_media':
     command     => "chown -R www-data.www-data $private_media_root",
     onlyif      => "test -d $private_media_root",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  } ->
-
-  exec { 'chown_public_media':
-    command     => "chown -R www-data.www-data $media_root",
-    onlyif      => "test -d $media_root",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
@@ -122,13 +95,6 @@ define neurovault::django (
     group       => "www-data",
     mode        => "700",
   } ->
-
-  file { $media_root:
-    ensure      => "directory",
-    owner       => "www-data",
-    group       => "www-data",
-    mode        => "775",
-  }
 
   if $start_debug == 'true' {
       file_line { "set_django_debug":

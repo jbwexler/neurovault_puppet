@@ -7,9 +7,7 @@ define neurovault::nginx (
   $tmp_dir,
   $http_server,
   $private_media_root,
-  $media_root,
   $private_media_url,
-  $media_url,
 )
 
 {
@@ -73,13 +71,6 @@ define neurovault::nginx (
     vhost           => $host_name,
     location        => '/static',
     location_alias           => "$app_path/neurovault/static",
-  }
-
-  nginx::resource::location { 'pub-media':
-    ensure          => present,
-    vhost           => $host_name,
-    location        => $media_url,
-    location_alias           => $media_root,
   }
 
   nginx::resource::location { 'secure-media':

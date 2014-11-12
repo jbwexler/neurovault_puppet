@@ -11,7 +11,7 @@ define neurovault::nginx (
 {
 
  # config apache / wsgi
-
+ # Apache/mod_wsgi support is deprecated, this is out of date.
   class { 'apache':
     purge_configs => false,
     default_mods => true,

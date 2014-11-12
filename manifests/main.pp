@@ -10,6 +10,7 @@ define neurovault::main (
   $system_user,
   $tmp_dir,
   $repo_url,
+  $repo_branch,
   $neurodeb_list,
   $neurodeb_sources,
   $neurodeb_apt_key,
@@ -22,9 +23,6 @@ define neurovault::main (
   $private_media_root,
   $private_media_url,
   $private_media_existing,
-  $media_root,
-  $media_url,
-  $media_existing,
   $gmail_login_str,
   $freesurfer_dl_path,
   $freesurfer_src,
@@ -35,8 +33,8 @@ define neurovault::main (
   $bash_config_loc,
   $pycortex_repo,
   $pycortex_branch,
-  $pycortex_data_dir,
-  $pycortex_existing_subject,
+  $pycortex_datastore,
+  $neurovault_data_repo,
 )
 
 {
@@ -50,7 +48,7 @@ define neurovault::main (
 
   # --install neurodebian
   exec { "install_neurodeb_apt_loc":
-    command => "wget -O- $neurodeb_list | sudo tee $neurodeb_list_loc"
+    command => "wget -O- $neurodeb_list | sudo tee $neurodeb_sources"
   } ->
   exec { "install_neurodeb_apt_key":
     command => "apt-key adv --recv-keys --keyserver $neurodeb_apt_key"
@@ -170,7 +168,7 @@ define neurovault::main (
 
   # download code from repo
   exec { "clone-nv-app":
-    command => "git clone $repo_url",
+    command => "git clone -b $repo_branch $repo_url",
     creates => "$app_path",
     user => $system_user,
     cwd => $env_path
@@ -208,9 +206,7 @@ define neurovault::main (
     tmp_dir => $tmp_dir,
     http_server => $http_server,
     private_media_root => $private_media_root,
-    media_root => $media_root,
     private_media_url => $private_media_url,
-    media_url => $media_url,
   } ->
 
   # config Django
@@ -233,9 +229,6 @@ define neurovault::main (
     private_media_root => $private_media_root,
     private_media_url => $private_media_url,
     private_media_existing => $private_media_existing,
-    media_root => $media_root,
-    media_url => $media_url,
-    media_existing => $media_existing,
   } ->
 
   # config database
@@ -274,8 +267,11 @@ define neurovault::main (
     freesurfer_lic_key => $freesurfer_lic_key,
     bash_config_loc => $bash_config_loc,
     system_user => $system_user,
+    app_path => $app_path,
+    neurovault_data_repo => $neurovault_data_repo,
   } ->
 
+  # install Pycortex
   neurovault::pycortex { 'install_pycortex':
     tmp_dir => $tmp_dir,
     env_path => $env_path,
@@ -283,8 +279,8 @@ define neurovault::main (
     app_path => $app_path,
     pycortex_repo => $pycortex_repo,
     pycortex_branch => $pycortex_branch,
-    pycortex_data_dir => $pycortex_data_dir,
-    pycortex_existing_subject => $pycortex_existing_subject,
+    pycortex_datastore => $pycortex_datastore,
+    neurovault_data_repo => $neurovault_data_repo,
   }
 
 }

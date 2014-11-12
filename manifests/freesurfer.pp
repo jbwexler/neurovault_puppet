@@ -8,6 +8,8 @@ define neurovault::freesurfer (
   $freesurfer_lic_key,
   $bash_config_loc,
   $system_user,
+  $app_path,
+  $neurovault_data_repo,
 )
 
 {
@@ -86,7 +88,20 @@ define neurovault::freesurfer (
     path  => "$freesurfer_installdir/freesurfer/.license",
     line  => "$freesurfer_lic_key",
     match => "^\s.*$freesurfer_lic_key.*$"
+  } ->
+
+  # place correct freesurfer path in settings.py
+  file_line { "freesurfer_home_setting":
+    path  => "$app_path/neurovault/settings.py",
+    line  => "os.environ[\"FREESURFER_HOME\"] = \"$freesurfer_installdir/freesurfer\"",
+    match => "^os\.environ\[\"FREESURFER_HOME\"\] =.*$",
+  } ->
+
+  exec { "get-brain-nii":
+    command => "svn export $neurovault_data_repo/freesurfer/brain.nii.gz $freesurfer_installdir/freesurfer/subects/fsaverage/mri/brain.nii.gz",
+    creates => "$freesurfer_installdir/freesurfer/subects/fsaverage/mri/brain.nii.gz",
   }
+
 
 }
 
