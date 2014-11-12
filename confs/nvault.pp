@@ -33,8 +33,8 @@ neurovault::main { 'nvault-install':
     #  leading space.
 
     freesurfer_lic_email => "freesurfer_email@yourdomain.com",
-    freesurfer_lic_id => "00000",
-    freesurfer_lic_key => " fs_lic_keytext", # note leading space.
+    freesurfer_lic_id => "123456",
+    freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
     #  http://localhost.  This should be consistent with your host_name (see
@@ -67,7 +67,7 @@ neurovault::main { 'nvault-install':
     # Path to an existing SQL dump file with an existing version of the
     #  NeuroVault database.  Use this to populate the database with existing
     #  data.  If starting with a fresh installation, this can be ignored.
-    db_existing_sql => "/path/to/database/dump.sql"
+    db_existing_sql => "/path/to/database/dump.sql",
 
     # location of Python virtual environment.
     # Puppet will install the python environment at this location.
@@ -97,7 +97,7 @@ neurovault::main { 'nvault-install':
     # Link to the Github repository that contains the NeuroVault default data.
     # Note: the URL is formatted for Github SVN support:
     #  (`repo.git` becomes `repo/trunk`)
-    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk"
+    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk",
 
     # The NeuroDebian repository link, sources.list, and apt key source  for
     #  Ubuntu 14.  No need to modify this.
@@ -109,7 +109,7 @@ neurovault::main { 'nvault-install':
     #  /WSGI platforms: Nginx/uwsgi or alternately Apache/mod_wsgi.
     # Use `nginx` unless you have a very specific reason to use `apache`,
     #  which is deprecated.
-    http_server => "nginx"
+    http_server => "nginx",
 
     # Dropbox Backup settings
     #  storage module, usually dropbox_storage.  The backup module also

@@ -31,7 +31,9 @@ Note:  Its not recommended to use this module if you already are using Nginx or 
 
 4) Edit `/etc/puppet/modules/confs/nvault.pp` with settings to match your desired server environment.  The configurable values are described in the inline comments below:
 
-Important: Most variables can be left with the default values.  The settings variables that must be modified are listed separately at the top of the configuration file.
+_Important_: Most variables can be left with the default values.  The settings variables that must be modified are listed separately at the top of the configuration file.
+
+_Also Important_:  Don't use empty strings for settings you don't need.  Leave the provided dummy value, or use `'none'`
     
 ```ruby
 
@@ -71,7 +73,7 @@ neurovault::main { 'nvault-install':
 
     freesurfer_lic_email => "your_email_address@yourdomain.com",
     freesurfer_lic_id => "00000",
-    freesurfer_lic_key => " fs_lic_keytext", # note leading space.
+    freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or 
     #  http://localhost. You can use the default. This should be consistent 

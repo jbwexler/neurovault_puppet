@@ -18,6 +18,7 @@ define neurovault::pycortex (
     $pycortex_datastore,
     "$pycortex_datastore/colormaps",
     "$pycortex_datastore/temp",
+    "$pycortex_datastore/db/fsaverage/transforms",
   ]
 
   # subversion is used to export file resources from github
@@ -46,6 +47,12 @@ define neurovault::pycortex (
     creates => $pycortex_datastore,
   } ->
 
+  exec { 'chown_datastore':
+    command     => "chown -R www-data.www-data $pycortex_datastore",
+    onlyif      => "test -d $pycortex_datastore",
+    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+  } ->
+
   # create/chown data dirs
 
   file { $data_dirs:
@@ -71,6 +78,7 @@ define neurovault::pycortex (
     command     => "cp $pycortex_path/filestore/colormaps/* $pycortex_datastore/colormaps/",
     creates     => "$pycortex_datastore/colormaps/Accent.png",
   } ->
+
 
   exec { 'chown_colormaps':
     command     => "chown -R www-data.www-data $pycortex_datastore/colormaps",

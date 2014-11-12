@@ -87,7 +87,7 @@ define neurovault::freesurfer (
   file_line { "freesurf_lic3":
     path  => "$freesurfer_installdir/freesurfer/.license",
     line  => "$freesurfer_lic_key",
-    match => "^\s.*$freesurfer_lic_key.*$"
+    match => "^\s.{13}$"
   } ->
 
   # place correct freesurfer path in settings.py
