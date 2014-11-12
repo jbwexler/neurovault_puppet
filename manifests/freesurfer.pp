@@ -98,8 +98,8 @@ define neurovault::freesurfer (
   } ->
 
   exec { "get-brain-nii":
-    command => "svn export $neurovault_data_repo/freesurfer/brain.nii.gz $freesurfer_installdir/freesurfer/subects/fsaverage/mri/brain.nii.gz",
-    creates => "$freesurfer_installdir/freesurfer/subects/fsaverage/mri/brain.nii.gz",
+    command => "svn export $neurovault_data_repo/freesurfer/brain.nii.gz $freesurfer_installdir/freesurfer/subjects/fsaverage/mri/brain.nii.gz",
+    creates => "$freesurfer_installdir/freesurfer/subjects/fsaverage/mri/brain.nii.gz",
   }
 
 

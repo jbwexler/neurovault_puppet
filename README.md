@@ -61,21 +61,21 @@ neurovault::main { 'nvault-install':
 
     gmail_login_str => "system-notify@infocortex.com:themailpasswd",
 
-    # Freesurfer license settings.  Freesurfer requires seperate user 
-    #  registration as non-free software.  Go to 
+    # Freesurfer license settings.  Freesurfer requires separate user 
+    #  registration as it is non-free software.  Go to 
     #  https://surfer.nmr.mgh.harvard.edu/registration.html to register for a 
     #  free Freesurfer license key.  The three lines of the license file you
     #  receive in the email are placed into the following variables.  Note 
     #  that the actual license string of encrypted characters contains a 
     #  leading space.
 
-    freesurfer_lic_email => "freesurfer_email@yourdomain.com",
+    freesurfer_lic_email => "your_email_address@yourdomain.com",
     freesurfer_lic_id => "00000",
     freesurfer_lic_key => " fs_lic_keytext", # note leading space.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or 
-    #  http://localhost.  This should be consistent with your host_name (see 
-    #  below):
+    #  http://localhost. You can use the default. This should be consistent 
+    #  with your host_name (see below):
     app_url => "http://neurovault-dev.local",
     
     # The fully-qualified hostname of your server, localhost.localdomain or 
@@ -134,7 +134,7 @@ neurovault::main { 'nvault-install':
     # Link to the Github repository that contains the NeuroVault default data.
     # Note: the URL is formatted for Github SVN support: 
     #  (`repo.git` becomes `repo/trunk`)
-    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk/"
+    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk"
 
     # The NeuroDebian repository link, sources.list, and apt key source  for 
     #  Ubuntu 14.  No need to modify this.

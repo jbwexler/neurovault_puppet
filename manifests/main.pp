@@ -188,7 +188,30 @@ define neurovault::main (
     ensure => present
   } ->
 
-  python::requirements { "$app_path/requirements.txt":
+  # Temp: comment pycortex from requirements, we build it manually,
+  # since the pypi packaging/dependency resolution is broken (like numpy,scipy, etc)
+  file { "$app_path/temp_requirements.txt":
+    owner => $system_user,
+    group => $system_user,
+    mode => 644,
+    ensure => present,
+    source => "$app_path/requirements.txt",
+  } ->
+
+  # Django 1.7 is pretty much required now (migrations, cli scripts)
+  file_line { "change_djangoversion_reqs":
+    path  => "$app_path/temp_requirements.txt",
+    line  => "Django==1.7",
+    match => "^Django<?>?={0,2}.*$",
+  } ->
+
+  file_line { "comment_pycortex_from_reqs":
+    path  => "$app_path/temp_requirements.txt",
+    line  => "#pycortex",
+    match => "^#?pycortex$",
+  } ->
+
+  python::requirements { "$app_path/temp_requirements.txt":
     virtualenv => $env_path,
     owner => $system_user,
     group => $system_user,
@@ -207,28 +230,6 @@ define neurovault::main (
     http_server => $http_server,
     private_media_root => $private_media_root,
     private_media_url => $private_media_url,
-  } ->
-
-  # config Django
-
-  neurovault::django  { 'django_appsetup':
-    env_path => $env_path,
-    app_path => $app_path,
-    app_url => $app_url,
-    host_name => $host_name,
-    system_user => $system_user,
-    http_server => $http_server,
-    db_name => $db_name,
-    db_username => $db_username,
-    db_userpassword => $db_userpassword,
-    dbbackup_storage => $dbbackup_storage,
-    dbbackup_tokenpath => $dbbackup_tokenpath,
-    dbbackup_appkey => $dbbackup_appkey,
-    dbbackup_secret => $dbbackup_secret,
-    start_debug     => $start_debug,
-    private_media_root => $private_media_root,
-    private_media_url => $private_media_url,
-    private_media_existing => $private_media_existing,
   } ->
 
   # config database
@@ -281,6 +282,38 @@ define neurovault::main (
     pycortex_branch => $pycortex_branch,
     pycortex_datastore => $pycortex_datastore,
     neurovault_data_repo => $neurovault_data_repo,
+  } ->
+
+  # last, config Django
+
+  neurovault::django  { 'django_appsetup':
+    env_path => $env_path,
+    app_path => $app_path,
+    app_url => $app_url,
+    host_name => $host_name,
+    system_user => $system_user,
+    http_server => $http_server,
+    db_name => $db_name,
+    db_username => $db_username,
+    db_userpassword => $db_userpassword,
+    dbbackup_storage => $dbbackup_storage,
+    dbbackup_tokenpath => $dbbackup_tokenpath,
+    dbbackup_appkey => $dbbackup_appkey,
+    dbbackup_secret => $dbbackup_secret,
+    start_debug     => $start_debug,
+    private_media_root => $private_media_root,
+    private_media_url => $private_media_url,
+    private_media_existing => $private_media_existing,
+  } ->
+
+  # restart daemons
+
+  exec { "restart_uwsgi":
+    command => "service uwsgi restart"
+  } ->
+
+  exec { "restart_nginx":
+    command => "service nginx restart"
   }
 
 }

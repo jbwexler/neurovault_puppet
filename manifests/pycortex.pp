@@ -88,8 +88,8 @@ define neurovault::pycortex (
 
   file_line { "pycortex_resource_setting":
     path  => "$app_path/neurovault/settings.py",
-    line  => "('pycortex-resources', '$pycortex_path/cortex/webgl/resources')",
-    match => "^\(\'pycortex-resources\',.*$",
+    line  => "    ('pycortex-resources', '$pycortex_path/cortex/webgl/resources'),",
+    match => "^\s*\(\'pycortex-resources\',.*$",
   }
 
 

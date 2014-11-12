@@ -94,7 +94,7 @@ define neurovault::django (
     owner       => "www-data",
     group       => "www-data",
     mode        => "700",
-  } ->
+  }
 
   if $start_debug == 'true' {
       file_line { "set_django_debug":

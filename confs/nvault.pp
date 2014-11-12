@@ -97,7 +97,7 @@ neurovault::main { 'nvault-install':
     # Link to the Github repository that contains the NeuroVault default data.
     # Note: the URL is formatted for Github SVN support:
     #  (`repo.git` becomes `repo/trunk`)
-    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk/"
+    neurovault_data_repo => "https://github.com/NeuroVault/neurovault_data/trunk"
 
     # The NeuroDebian repository link, sources.list, and apt key source  for
     #  Ubuntu 14.  No need to modify this.
