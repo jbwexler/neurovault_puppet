@@ -156,4 +156,4 @@ You will see that the development server is started at localhost on port 8000.  
 
 You should now be able to create a login, create a collection, and start testing NeuroVault!  Remember that to easily upload images, you can put them in the shared data folder on your local machine, and they will appear in /data!
 
-![Cookie Collection](http://www.vbmis.com/bmi/share/img/neurocookie.png "Cookie Collection")
+![Cookie Collection](img/neurocookie.png "Cookie Collection")
