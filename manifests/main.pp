@@ -61,6 +61,14 @@ define neurovault::main (
   # install system prereqs
   ###
 
+  package { "git":
+      ensure => "installed",
+  } ->
+
+  package { "subversion":
+      ensure => "installed",
+  } ->
+
   package { "libhdf5-dev":
       ensure => "installed"
   } ->

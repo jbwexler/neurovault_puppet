@@ -13,10 +13,10 @@ Be sure to have an account with administrative access (sudo).
 
 Note:  Its not recommended to use this module if you already are using Nginx or Postgresql, since your existing configuration might be changed.  Use this tool as  a basis for a manual install in your configured environment.
 
-2. Install Puppet, Git and Ruby packages, and update your operating system:
+2. Install the Puppet package, and update your operating system:
         
     ```
-    sudo apt-get install git ruby puppet
+    sudo apt-get install puppet
     sudo apt-get update
     sudo apt-get -u upgrade
     ```

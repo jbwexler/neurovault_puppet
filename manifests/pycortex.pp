@@ -21,11 +21,6 @@ define neurovault::pycortex (
     "$pycortex_datastore/db/fsaverage/transforms",
   ]
 
-  # subversion is used to export file resources from github
-  package { "subversion":
-    ensure => installed,
-  } ->
-
   # manually install pycortex (pip packaging is broken)
   exec { "clone-pycortex":
     command => "git clone -b $pycortex_branch $pycortex_repo",
@@ -45,6 +40,7 @@ define neurovault::pycortex (
   exec { "get-pycortex-datastore":
     command => "svn export $neurovault_data_repo/pycortex_datastore $pycortex_datastore",
     creates => $pycortex_datastore,
+    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
   exec { 'chown_datastore':
