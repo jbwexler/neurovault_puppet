@@ -127,7 +127,7 @@ neurovault::main { 'nvault-install':
     start_debug =>"true",
 
     #  Media / Private Media locations.
-    private_media_root => "/opt/nv-env/image_data",
+    private_media_root => "/opt/image_data",
     private_media_url => "/media/images",
 
     # Freesurfer download source and settings
@@ -138,5 +138,5 @@ neurovault::main { 'nvault-install':
     #Pycortex Settings
     pycortex_repo => "https://github.com/gallantlab/pycortex.git",
     pycortex_branch => "master",
-    pycortex_datastore => "/opt/nv-env/pycortex-data",
+    pycortex_datastore => "/opt/pycortex-data",
 }
