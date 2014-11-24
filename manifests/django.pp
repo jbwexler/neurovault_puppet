@@ -4,6 +4,7 @@ define neurovault::django (
     $app_url,
     $host_name,
     $system_user,
+    $httpd_user,
     $http_server,
     $db_name,
     $db_username,
@@ -26,7 +27,7 @@ define neurovault::django (
     ensure => present,
     content => template('neurovault/secrets.py.erb'),
     owner =>  $system_user,
-    group => 'www-data',
+    group => $httpd_user,
     mode => '660'
   } ->
 
@@ -82,8 +83,9 @@ define neurovault::django (
   } ->
 
   exec { 'chown_private_media':
-    command     => "chown -R www-data.www-data $private_media_root",
+    command     => "chown -R $httpd_user.$httpd_user $private_media_root",
     onlyif      => "test -d $private_media_root",
+    unless      => "test -f /vagrant/Vagrantfile",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
@@ -91,8 +93,8 @@ define neurovault::django (
 
   file { $private_media_root:
     ensure      => "directory",
-    owner       => "www-data",
-    group       => "www-data",
+    owner       => $httpd_user,
+    group       => $httpd_user,
     mode        => "700",
   }
 

@@ -49,6 +49,12 @@ neurovault::main { 'nvault-install':
 
     host_name => "neurovault-dev.local",
 
+    # Main OS user- Use an normal unprivileged user account for production.
+    system_user => "vagrant",
+
+    # Webserver user.  Use `www-data` for production!
+    httpd_user => "vagrant",
+
     #################################################################
     # SECTION 2: Optional                                           #
     # These can be changed to customize the installation, but       #

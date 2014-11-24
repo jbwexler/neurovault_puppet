@@ -2,6 +2,7 @@ define neurovault::pycortex (
   $tmp_dir,
   $env_path,
   $system_user,
+  $httpd_user,
   $app_path,
   $pycortex_repo,
   $pycortex_branch,
@@ -38,34 +39,47 @@ define neurovault::pycortex (
   # download default datastore.  thanks to git support for svn,
   # svn export is a handy way to download bare subdirectories of git repos.
   exec { "get-pycortex-datastore":
-    command => "svn export $neurovault_data_repo/pycortex_datastore $pycortex_datastore",
-    creates => $pycortex_datastore,
+    command => "svn export --force $neurovault_data_repo/pycortex_datastore $pycortex_datastore",
+    creates => "$pycortex_datastore/pycortex",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
   exec { 'chown_datastore':
-    command     => "chown -R www-data.www-data $pycortex_datastore",
+    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
     onlyif      => "test -d $pycortex_datastore",
+    unless      => "test -f /vagrant/Vagrantfile",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
   # create/chown data dirs
 
   file { $data_dirs:
-    owner => "www-data",
-    group => "www-data",
+    owner => $httpd_user,
+    group => $httpd_user,
     mode => 775,
     ensure => directory
   } ->
 
   # create config file
 
-  file { "$pycortex_datastore/pycortex/options.cfg":
-    ensure => present,
-    content => template('neurovault/pycortex_options.cfg.erb'),
-    owner =>  $system_user,
-    group => 'www-data',
-    mode => '664'
+  #file { "$pycortex_datastore/pycortex/options.cfg":
+  #  ensure => present,
+  #  content => template('neurovault/pycortex_options.cfg.erb'),
+  #  owner =>  $system_user,
+  #  group => $httpd_user,
+  #  mode => '664'
+  #} ->
+
+  file_line { "pycortex_option_filestore":
+    path  => "$pycortex_datastore/pycortex/options.cfg",
+    line  => "filestore = $pycortex_datastore/db",
+    match => "^filestore\s*=.*$",
+  } ->
+
+  file_line { "pycortex_option_colormaps":
+    path  => "$pycortex_datastore/pycortex/options.cfg",
+    line  => "colormaps = $pycortex_datastore/colormaps",
+    match => "^colormaps\s*=.*$",
   } ->
 
   # copy color maps
@@ -77,8 +91,9 @@ define neurovault::pycortex (
 
 
   exec { 'chown_colormaps':
-    command     => "chown -R www-data.www-data $pycortex_datastore/colormaps",
+    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore/colormaps",
     onlyif      => "test -d $pycortex_datastore/colormaps",
+    unless      => "test -f /vagrant/Vagrantfile",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 

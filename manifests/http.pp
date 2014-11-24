@@ -4,6 +4,7 @@ define neurovault::http (
   $app_path,
   $host_name,
   $system_user,
+  $httpd_user,
   $tmp_dir,
   $http_server,
   $private_media_root,
@@ -20,6 +21,7 @@ define neurovault::http (
       app_path => $app_path,
       host_name => $host_name,
       system_user => $system_user,
+      httpd_user => $httpd_user,
       tmp_dir => $tmp_dir,
       http_server => $http_server,
       private_media_root => $private_media_root,
@@ -34,6 +36,7 @@ define neurovault::http (
       app_path => $app_path,
       host_name => $host_name,
       system_user => $system_user,
+      httpd_user => $httpd_user,
       tmp_dir => $tmp_dir,
       http_server => $http_server,
     }
