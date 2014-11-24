@@ -12,29 +12,38 @@ Install VirtualBox and Vagrant for your OS:
 + https://www.virtualbox.org/wiki/Downloads
 
 #### 2. Setup A Vagrant project directory
-Create, then enter a new directory on your computer (the Host) that will contain your Vagrant project.  This directory will centrally contain all project resources:  Git-tracked project source code, project media, server configuration manifests, and VM configuration:
-
++ Create, then enter a new directory on your computer (the Host) that will contain your Vagrant project:
+    ```
     mkdir -p ~/vms/neurovault
     cd ~/vms/neurovault
+    ```
 
-Clone the NeuroVault puppet repository (this repo) to your vagrant directory:
+    _This directory will contain all project resources:  Git-tracked project source code, project media, server configuration manifests, and VM configuration._
 
++ Clone the NeuroVault puppet repository (this repo) to your vagrant directory:
+
+    ```
     git clone https://github.com/NeuroVault/neurovault_puppet.git
+    ```
 
-Copy the Vagrantfile for Virtualbox to the root of the project directory:
-    
++ Copy the Vagrantfile for Virtualbox to the root of the project directory:
+    ```
     cp neurovault_puppet/confs/Vagrantfile.virtualbox Vagrantfile
+    ```
 
-__Optional__: Edit the Vagrantfile and customize it to your needs.  (There is usually no need to modify this.)
-+ The default configuration will use basic networking (NAT and port forwarding), and the most minimal file sharing available for VirtualBox (Rsync).  The options should work on any system that can use Vagrant.
-+ See the detailed comments in the [Vagrantfile](../Vagrantfile.virtualbox) for possible customization options.
++ _Optional_: Edit the Vagrantfile and customize it to your needs.  (There is usually no need to modify this.)
+    - The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and Rsync).  The options should work on any system that can use Vagrant.
+    - See the detailed comments in the [Vagrantfile](../Vagrantfile.virtualbox) for possible customization options.
 
 #### 3. Edit Puppet configuration
-Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installation.  The only mandatory settings for a fully-functional VM are the Gmail account for outgoing mail, and the Freesurfer license key.  
-
+Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installation.  Only a few settings require changes:
++`gmail_login_str` to enable for outgoing mail
++`skip_freesurfer` to choose if Freesurfer will be installed
++Freesurfer license key (3 lines).
+ 
 See the comments in the config file for details.
 
-__Note__:  If you don't need a functional outgoing mailer, or Freesurfer/Pycortex, you can simply set `skip_freesurfer => true` and skip to step 4.
+__Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true` and proceeed to step 4.  (Pycortex will not be able to generate 3D views without Freesurfer.)
 
 ```ruby
     # Gmail SMTP setting:  Enter a Gmail username and password in this format
@@ -46,7 +55,7 @@ __Note__:  If you don't need a functional outgoing mailer, or Freesurfer/Pycorte
     #  you'll need to log in, send an email, and receive an email as a normal
     #  web user before the account can be used programatically.
 
-    gmail_login_str => "protocol0@gmail.com:Horizon45",
+    gmail_login_str => "you@gmail.com",
 
     # Freesurfer license settings.  Freesurfer requires seperate user
     #  registration as non-free software.  Go to
@@ -59,9 +68,9 @@ __Note__:  If you don't need a functional outgoing mailer, or Freesurfer/Pycorte
     # Set this to 'True' to skip Freesurfer altogether:
     skip_freesurfer => false,
 
-    freesurfer_lic_email => "rivera@infocortex.com",
-    freesurfer_lic_id => "15139",
-    freesurfer_lic_key => " *CAKuJnNIoC86", # leading space then 13char key
+    freesurfer_lic_email => "you@email.net",
+    freesurfer_lic_id => "00000",
+    freesurfer_lic_key => " 000000000", # leading space then 13char key
 ```
 
 #### 4. Vagrant Up
@@ -69,25 +78,25 @@ Now, we're ready to launch the VM.  Vagrant and Puppet will create a fully autom
 
     vagrant up
 
-The installation will take anywhere from 30 minutes to 3 hours, depending on performance, network conditions, and whether Freesurfer is installed (4GB).
+The installation will take anywhere from 30 minutes to 3 hours, depending on performance, network conditions, and whether Freesurfer will be installed (4GB).
 
 #### 5. Using the VM
 
 Vagrant will inform you when the installation is complete.
 
-###### Accessing the VM:
+##### Accessing the VM:
 
 + To SSH into your VM, type `vagrant ssh`.
 + Note:  Everything is done as the `vagrant` user account.
-+ To access the site, go to `http://localhost:8000` in your Host's browser.
++ To access the site, go to `http://localhost:8000` in your Host OS browser.
 
-###### File locations:
+##### File locations:
 
-  _Django App_: Your python environment and NeuroVault git working repositories will be located at `~/vms/neurovault/nv_env` on your host machine.  You can develop from this location, and changes will be synced to the VM.
+  **Django App**: Your python environment and NeuroVault git working repositories will be located at `~/vms/neurovault/nv_env` on your host machine.  You can develop from this location, and changes will be synced to the VM.
 
-  _Image Data_:  The site's image data directory will be served from `~/vms/neurovault/image_data` on the Host OS.
+  **Image Data**:  The site's image data directory will be served from `~/vms/neurovault/image_data` on the Host OS.
 
-  _Pycortex Data:_ The site's pycortex datastore will be served from `~/vms/neurovault/pycortex_data` on the Host OS.  
+  **Pycortex Data:** The site's pycortex datastore will be served from `~/vms/neurovault/pycortex_data` on the Host OS.  
 
 
 ##### Django Devserver:
@@ -119,9 +128,9 @@ The system is deployed in basic production configuration by default, with Nginx 
     ./manage.py runserver
     ```
 
-    + To access the Dev server running app, use `http://localhost:8001` from the Host OS (Port 8001 instead of 8000)
++ To access the running Dev server, go to `http://localhost:8001` in your Host OS Browser (Port 8001 is used for the devserver, and 8000 is used for Nginx.)
 
 #### 6. Complete!
-You should now be able to create a login, create a collection, and start testing NeuroVault! 
+You should now be able to create a login, create a collection, and start testing NeuroVault! :shipit:
 
 ![Cookie Collection](img/neurocookie.png "Cookies!")

@@ -1,4 +1,4 @@
-####Additional Notes for (WIP)
+####Additional Notes for GUI use (WIP)
 
 See here for notes using X-windows to access your VM if networking is broken, or other reasons.
 

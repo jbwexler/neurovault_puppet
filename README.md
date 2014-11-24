@@ -5,14 +5,14 @@ This module is intended for [Puppet](http://puppetlabs.com/puppet/what-is-puppet
 
 To automatically provision and deploy a development environment with Puppet and [Vagrant](http://vagrantup.com), see:
 
-+ **[DEV_SERVER.md](doc/DEV_SERVER.md)**
++ **[INSTALL_DEVSERVER.md](doc/INSTALL_DEVSERVER.md)**
 
 To deploy a production installation with Puppet standalone, see:
 
-+ **[PRODUCTION.md](doc/PRODUCTION.md)**
++ **[INSTALL_PRODUCTION.md](doc/INSTALL_PRODUCTION.md)**
 
 
 
-######Additional Info
+######Additional Info:
 For information about using your VM with an X-windows GUI, see [here](doc/GUI_NOTES.md).  For information regarding manual installation of Python environment, see see [here](doc/PIP_NOTES.md).
 
