@@ -132,10 +132,10 @@ The system is deployed in basic production configuration by default, with Nginx 
     cd NeuroVault
     ```
 
-+ Start the Dev server:
++ Start the Dev server on port 8080:
 
     ```
-    ./manage.py runserver
+    ./manage.py runserver 0.0.0.0:8080
     ```
 
 + To access the running Dev server, go to `http://localhost:8001` in your Host OS Browser (Port 8001 is used for the devserver, and 8000 is used for Nginx.)
