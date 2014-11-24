@@ -1,4 +1,6 @@
 #!/bin/sh
+apt-get --assume-yes install git
+cd /etc/puppet/modules/neurovault
 puppet module install puppetlabs/postgresql
 puppet module install puppetlabs/stdlib
 puppet module install puppetlabs-apache

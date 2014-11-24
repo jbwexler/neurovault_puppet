@@ -25,6 +25,11 @@ define neurovault::freesurfer (
     ensure => installed,
   } ->
 
+  # not default in some vagrant boxes
+  package { 'libxmu6':
+    ensure => installed,
+  } ->
+
   exec { 'dl_freesurfer':
       command => "wget $freesurfer_dl_path/$freesurfer_src",
       cwd => $tmp_dir,

@@ -11,7 +11,7 @@ neurovault::main { 'nvault-install':
     # For a production install, manually create and use an un-privileged
     #  account normal account such as 'neurovault'.  For dev, its usually
     #  convenient to use your primary user account.
-    system_user => "username",
+    system_user => "vagrant",
 
     # Gmail SMTP setting:  Enter a Gmail username and password in this format
     #  to specify a Google account to use for the server's outgoing mail.  You
@@ -22,7 +22,7 @@ neurovault::main { 'nvault-install':
     #  you'll need to log in, send an email, and receive an email as a normal
     #  web user before the account can be used programatically.
 
-    gmail_login_str => "system-notify@infocortex.com:themailpasswd",
+    gmail_login_str => "an_account@gmail.com:password",
 
     # Freesurfer license settings.  Freesurfer requires seperate user
     #  registration as non-free software.  Go to
@@ -32,8 +32,8 @@ neurovault::main { 'nvault-install':
     #  that the actual license string of encrypted characters contains a
     #  leading space.
 
-    freesurfer_lic_email => "freesurfer_email@yourdomain.com",
-    freesurfer_lic_id => "123456",
+    freesurfer_lic_email => "you@yourdomain.com",
+    freesurfer_lic_id => "00000",
     freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
@@ -89,10 +89,10 @@ neurovault::main { 'nvault-install':
     bash_config_loc => "/etc/profile.d/freesurfer.sh",
 
     # The location of the NeuroVault git repository:
-    repo_url => "https://github.com/NeuroVault/NeuroVault.git",
+    repo_url => "https://github.com/infocortex/NeuroVault.git",
     # The branch to use, in case you want to test a feature branch from a
     #  fresh install, otherwise always 'master':
-    repo_branch => "master",
+    repo_branch => "enh/collection_sharing",
 
     # Link to the Github repository that contains the NeuroVault default data.
     # Note: the URL is formatted for Github SVN support:
@@ -136,7 +136,7 @@ neurovault::main { 'nvault-install':
     freesurfer_installdir => "/opt",
 
     #Pycortex Settings
-    pycortex_repo => "https://github.com/gallantlab/pycortex.git",
-    pycortex_branch => "master",
+    pycortex_repo => "https://github.com/infocortex/pycortex.git",
+    pycortex_branch => "enh/static_options",
     pycortex_datastore => "/opt/pycortex-data",
 }
