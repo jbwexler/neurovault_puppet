@@ -1,0 +1,88 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "puppetlabs/ubuntu-14.04-64-puppet"
+
+  ###
+  # Shared Folders
+  # Note: Don't enable synced folders AFTER installation-
+  #   you will overwrite the installation.
+  ###
+
+  # mount point of Puppet module (Mandatory)
+  config.vm.synced_folder "neurovault_puppet", "/etc/puppet/modules/neurovault", rsync:true, create:true
+
+  # mount point of Python virtualenv, including source code
+  config.vm.synced_folder "nv_env", "/opt/nv_env", rsync:true, create:true
+
+  #  Mount point of images directory
+  config.vm.synced_folder "image_data", "/opt/image_data", rsync:true, create:true
+
+  #  Mount point of pycortex datastore
+  config.vm.synced_folder "pycortex_data", "/opt/pycortex_data", rsync:true, create:true
+
+  ###
+  # Network Options
+  # - forwarded_ports are used for compatibility and speed
+  # - for full network access to the VM, use private_network (host OS only),
+  #    or public_network (a real address bridged to your physical network):
+  #
+  # config.vm.network "private_network", type: "dhcp"
+  ###
+
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 8080, host: 8001
+
+  ###
+  # VM Settings
+  ###
+  config.vm.provider "virtualbox" do |vb|
+    # - use at least 2GB for reliable operation
+    # - use at least 4GB memory for Freesurfer to work
+    vb.memory = 4096
+
+    # - use the number of physical CPUs in your computer
+    vb.cpus = 4
+
+    # I/O APIC must be enabled for multiple CPUs
+    vb.customize ["modifyvm", :id, "--ioapic", "on"]
+
+    # - set `vb.gui = true` for a windowing system (GUI)
+    # - this is useful for debugging networking issues, or if you wish to work
+    #   directly from the VM.
+    #vb.gui = true
+
+  end
+
+  ###
+  # Provisioning (puppet)
+  ###
+  config.vm.provision "shell",
+    inline: "sh /etc/puppet/modules/neurovault/install_deps.sh"
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "neurovault_puppet/confs"
+    puppet.manifest_file = "nvault.pp"
+    puppet.options = [
+      '--verbose',
+      '--debug'
+    ]
+    puppet.synced_folder_type = "rsync"
+  end
+
+end
+
+
+
+
+
+
+
+
+
+

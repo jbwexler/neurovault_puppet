@@ -24,6 +24,7 @@ define neurovault::main (
   $private_media_url,
   $private_media_existing,
   $gmail_login_str,
+  $skip_freesurfer,
   $freesurfer_dl_path,
   $freesurfer_src,
   $freesurfer_installdir,
@@ -268,6 +269,7 @@ define neurovault::main (
 
   neurovault::freesurfer { 'install_freesurfer':
     tmp_dir => $tmp_dir,
+    skip_freesurfer => $skip_freesurfer,
     freesurfer_dl_path => $freesurfer_dl_path,
     freesurfer_src => $freesurfer_src,
     freesurfer_installdir => $freesurfer_installdir,

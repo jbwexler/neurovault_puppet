@@ -1,9 +1,8 @@
-# NeuroVault Development Server Setup
-## Install Virtualbox
-First install virtualbox:
+####Additional Notes for (WIP)
 
-sudo pip install virtualbox
-(or here for different OS: https://www.virtualbox.org/wiki/Downloads)
+See here for notes using X-windows to access your VM if networking is broken, or other reasons.
+
+### Extension Pack:
 
 I also installed the "VirtualBox Extension Pack," because I noticed a lot of the functionality under Settings had a note that basically said "this is only available with the extensions."  For example, to enable the remote display, the extensions were needed.  This is probably taken care of internally by Vagrant (the software we are going to use to run virtualbox) but I like to be extra careful.
 
@@ -12,48 +11,12 @@ I also installed the "VirtualBox Extension Pack," because I noticed a lot of the
 - Click on the link for the extensions for your version
 - It will open up with virtual box, and complete the install
 
-## Install Vagrant
-We are going to install "Vagrant," a front end to VirtualBox that is much easier than VirtualBox itself.
-
-- [Install Vagrant](https://www.vagrantup.com/downloads)
-- create a Vagrant project directory somewhere and enter it
-
-Tell Vagrant to make an Ubuntu 14 64bit virtual machine:
-
-    mkdir vagrantbox
-    cd vagrantbox
-    vagrant init ubuntu/trusty64
-
-
-There will now be a Vagrantfile in this directory.  Edit it.  We want to uncomment a few things:
-
-### Network: 
-Uncomment this line (line 27) and save the file:
-
-    # config.vm.network "private_network", ip: "192.168.33.10"   
-    to
-    config.vm.network "private_network", ip: "192.168.33.10" 
-
-This means that the ip address "192.168.33.10." will be your virtual machine's address.  I didn't actually test or use this.
-
 ### File Sharing: 
 We will possibly want to move images from the local machine to the virtual machine. Uncomment this line (line 42) to specify the folder to share.  The first folder is on your local machine, the second is on the virtual machine.
 
     # config.vm.synced_folder "/home/vanessa/Packages/vagrantbox/data", "/data"
     to
     config.vm.synced_folder "/home/vanessa/Packages/vagrantbox/data", "/data"
-
-
-### Memory:
-You will probably want to increase the amount of memory allocated to the machine, and so you should uncomment these lines (48,53,54):
-
-    config.vm.provider "virtualbox" do |vb|
-    #   # Don't boot with headless mode
-    #   vb.gui = true
-    #
-    #   # Use VBoxManage to customize the VM. For example to change memory:
-     vb.customize ["modifyvm", :id, "--memory", "8000"]    
-    end
 
 Exit from the editor, and create the directory for your data:
 
@@ -91,52 +54,9 @@ I would advise to not move forward if you don't have git working.  It's sort of 
 
 ---------------------------
 ### Clean Up
-You should first delete the files in your temporary directory to conserve space, especially the freesurfer download, which is massive.
+You should first delete the files in your temporary directory to conserve space, especially the freesurfer download, which is massive.  Or restart the VM:  `vagrant reload`.
 
     sudo rm /tmp/freesurfer-Linux-centos4_x86_64-stable-pub-v5.3.0.tar.gz
-
-----------------------------
-### Install Python Modules
-These python modules should (possibly) be installed / integrated into the puppet, but it's just as easy to install them separately. Go to where NeuroVault is installed:
-
-    cd /opt/nv-env
-
-I like using pip to install things:
-
-    wget https://bootstrap.pypa.io/get-pip.py
-    sudo python get-pip.py
-
-The requirements.txt file can be used to install (most) requirements for NeuroVault:
-
-    sudo pip install -r /opt/nv-env/NeuroVault/requirements.txt 
-
-I ran into an error when it hit Cython, so I installed it manually (and if pip doesn't work you can download and compile from source, but pip worked for me):
-
-    sudo pip install Cython
-
-Then I did it again:
-
-    sudo pip install -r /opt/nv-env/NeuroVault/requirements.txt 
-
-and unfortunately ran into issues with pycortex both via the requirements.txt and pip.
-
-> "UnicodeDecodeError: 'ascii' codec can't decode byte 0xe2 in position 44: ordinal not in range(128)*
-
-This was resolved by installing from source.  Note that downloading took quite some time:
-
-    git clone https://github.com/gallantlab/pycortex
-    cd pycortex
-    sudo python setup.py install
-    cd ..
-    rm -rf pycortex
-
-Then I did this one more time to make sure we had everything:
-
-    sudo pip install -r /opt/nv-env/NeuroVault/requirements.txt 
-
-Everything worked for me with the above.  If you are having trouble and need to look at the output, remember you can output the terminal text to a file 
-
-    sudo pip install -r NeuroVault/requirements.txt >> output.txt
 
 ### Start the server
 You can use your browser of choice to see the web interface, I chose to install firefox:
@@ -154,6 +74,3 @@ Now we can start the NeuroVault (django) server!
 
 You will see that the development server is started at localhost on port 8000.  If you started your ssh with the display forwarding (`vagrant ssh -- -Y`) you should be able to open up firefox and go to localhost:8000.  This is what I did, and ssh'd into the machine from another terminal to have the processes in separate windows.  Firefox spits out a lot of junk to the window and I didn't want that continually interrupting me.
 
-You should now be able to create a login, create a collection, and start testing NeuroVault!  Remember that to easily upload images, you can put them in the shared data folder on your local machine, and they will appear in /data!
-
-![Cookie Collection](img/neurocookie.png "Cookie Collection")

@@ -5,14 +5,6 @@ neurovault::main { 'nvault-install':
     # These options must be specified to perform installation. #
     ############################################################
 
-    # An existing user account (and matching group) to be used for ownership
-    # of the NeuroVault application and environment.
-    #
-    # For a production install, manually create and use an un-privileged
-    #  account normal account such as 'neurovault'.  For dev, its usually
-    #  convenient to use your primary user account.
-    system_user => "vagrant",
-
     # Gmail SMTP setting:  Enter a Gmail username and password in this format
     #  to specify a Google account to use for the server's outgoing mail.  You
     #  can create an account specifically for this purpose, or use an existing
@@ -22,7 +14,7 @@ neurovault::main { 'nvault-install':
     #  you'll need to log in, send an email, and receive an email as a normal
     #  web user before the account can be used programatically.
 
-    gmail_login_str => "an_account@gmail.com:password",
+    gmail_login_str => "your_acct@gmail.com:thepassword",
 
     # Freesurfer license settings.  Freesurfer requires seperate user
     #  registration as non-free software.  Go to
@@ -32,8 +24,11 @@ neurovault::main { 'nvault-install':
     #  that the actual license string of encrypted characters contains a
     #  leading space.
 
-    freesurfer_lic_email => "you@yourdomain.com",
-    freesurfer_lic_id => "00000",
+    # Set this to 'True' to skip Freesurfer altogether:
+    skip_freesurfer => true,
+
+    freesurfer_lic_email => "you@email.com",
+    freesurfer_lic_id => "000000",
     freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
