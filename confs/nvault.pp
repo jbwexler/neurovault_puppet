@@ -16,6 +16,9 @@ neurovault::main { 'nvault-install':
 
     gmail_login_str => "your_acct@gmail.com:thepassword",
 
+    # Set this to 'True' to skip Freesurfer altogether:
+    skip_freesurfer => true,
+
     # Freesurfer license settings.  Freesurfer requires seperate user
     #  registration as non-free software.  Go to
     #  https://surfer.nmr.mgh.harvard.edu/registration.html to register for a
@@ -23,13 +26,12 @@ neurovault::main { 'nvault-install':
     #  receive in the email are placed into the following variables.  Note
     #  that the actual license string of encrypted characters contains a
     #  leading space.
-
-    # Set this to 'True' to skip Freesurfer altogether:
-    skip_freesurfer => true,
-
     freesurfer_lic_email => "you@email.com",
     freesurfer_lic_id => "000000",
     freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
+
+    # Main OS user- Use an normal unprivileged user account for production
+    system_user => "vagrant",
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
     #  http://localhost.  This should be consistent with your host_name (see
@@ -66,7 +68,7 @@ neurovault::main { 'nvault-install':
 
     # location of Python virtual environment.
     # Puppet will install the python environment at this location.
-    env_path => "/opt/nv-env",
+    env_path => "/opt/nv_env",
 
     # Postgresql database settings.
     # Puppet will install and configure Postgresql automatically with the
@@ -133,5 +135,5 @@ neurovault::main { 'nvault-install':
     #Pycortex Settings
     pycortex_repo => "https://github.com/infocortex/pycortex.git",
     pycortex_branch => "enh/static_options",
-    pycortex_datastore => "/opt/pycortex-data",
+    pycortex_datastore => "/opt/pycortex_data",
 }

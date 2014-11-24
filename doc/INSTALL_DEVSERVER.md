@@ -13,6 +13,7 @@ Install VirtualBox and Vagrant for your OS:
 
 #### 2. Setup A Vagrant project directory
 + Create, then enter a new directory on your computer (the Host) that will contain your Vagrant project:
+
     ```
     mkdir -p ~/vms/neurovault
     cd ~/vms/neurovault
@@ -27,36 +28,45 @@ Install VirtualBox and Vagrant for your OS:
     ```
 
 + Copy the Vagrantfile for Virtualbox to the root of the project directory:
+
     ```
     cp neurovault_puppet/confs/Vagrantfile.virtualbox Vagrantfile
     ```
 
 + _Optional_: Edit the Vagrantfile and customize it to your needs.  (There is usually no need to modify this.)
-    - The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and Rsync).  The options should work on any system that can use Vagrant.
+    -  The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and Rsync).  The options should work on any system that can use Vagrant.
     - See the detailed comments in the [Vagrantfile](../Vagrantfile.virtualbox) for possible customization options.
 
 #### 3. Edit Puppet configuration
+
 Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installation.  Only a few settings require changes:
-+`gmail_login_str` to enable for outgoing mail
-+`skip_freesurfer` to choose if Freesurfer will be installed
-+Freesurfer license key (3 lines).
+
+- `gmail_login_str` to enable for outgoing mail
+
+- `skip_freesurfer` to choose if Freesurfer will be installed
+
+- Freesurfer license key (3 lines).
  
-See the comments in the config file for details.
+See the comments in the config file for details, or to customize other settings.
 
 __Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true` and proceeed to step 4.  (Pycortex will not be able to generate 3D views without Freesurfer.)
 
+
 ```ruby
+    
     # Gmail SMTP setting:  Enter a Gmail username and password in this format
     #  to specify a Google account to use for the server's outgoing mail.  You
     #  can create an account specifically for this purpose, or use an existing
     #  personal gmail account.
-    #
     # Note:  When creating a new Google account to use for outgoing SMTP,
     #  you'll need to log in, send an email, and receive an email as a normal
     #  web user before the account can be used programatically.
-
-    gmail_login_str => "you@gmail.com",
-
+    
+    gmail_login_str => "your_acct@gmail.com:thepassword",
+    
+    # Set this to 'True' to skip Freesurfer altogether:
+    skip_freesurfer => false,
+    
     # Freesurfer license settings.  Freesurfer requires seperate user
     #  registration as non-free software.  Go to
     #  https://surfer.nmr.mgh.harvard.edu/registration.html to register for a
@@ -64,14 +74,13 @@ __Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can
     #  receive in the email are placed into the following variables.  Note
     #  that the actual license string of encrypted characters contains a
     #  leading space.
-
-    # Set this to 'True' to skip Freesurfer altogether:
-    skip_freesurfer => false,
-
+    
     freesurfer_lic_email => "you@email.net",
     freesurfer_lic_id => "00000",
     freesurfer_lic_key => " 000000000", # leading space then 13char key
+
 ```
+
 
 #### 4. Vagrant Up
 Now, we're ready to launch the VM.  Vagrant and Puppet will create a fully automated installation.  From your Vagrant project directory, enter:
@@ -92,11 +101,11 @@ Vagrant will inform you when the installation is complete.
 
 ##### File locations:
 
-  **Django App**: Your python environment and NeuroVault git working repositories will be located at `~/vms/neurovault/nv_env` on your host machine.  You can develop from this location, and changes will be synced to the VM.
++ **Django App**: Your python environment and NeuroVault git working repositories will be located at `~/vms/neurovault/nv_env` on your host machine.  You can develop from this location, and changes will be synced to the VM.
 
-  **Image Data**:  The site's image data directory will be served from `~/vms/neurovault/image_data` on the Host OS.
++ **Image Data**:  The site's image data directory will be served from `~/vms/neurovault/image_data` on the Host OS.
 
-  **Pycortex Data:** The site's pycortex datastore will be served from `~/vms/neurovault/pycortex_data` on the Host OS.  
++ **Pycortex Data:** The site's pycortex datastore will be served from `~/vms/neurovault/pycortex_data` on the Host OS.  
 
 
 ##### Django Devserver:
