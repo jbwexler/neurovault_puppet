@@ -1,7 +1,7 @@
 Puppet module for installing NeuroVault
 =================
 
-This module is intended for Puppet standalone installation of [NeuroVault](https://github.com/chrisfilo/NeuroVault), a Python web application for storing, sharing and viewing unthresholded brain activation maps.
+This module is intended for Puppet standalone installation of [NeuroVault](https://github.com/chrisfilo/NeuroVault), a Python web application for storing, sharing and viewing unthresholded brain activation maps. For basic installation instuctions, continue reading below.  For full instructions for deployment of NeuroVault on a VirtualBox / Vagrant vm, please read [here](doc/DEVELOPMENT_SERVER_INSTRUCTIONS.md).
 
 ###Installation Instructions:
 
