@@ -41,15 +41,15 @@ Install VirtualBox and Vagrant for your OS:
 
 Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installation.  Only a few settings require changes:
 
-- `gmail_login_str` to enable for outgoing mail
+- `gmail_login_str`    to enable for outgoing mail
 
-- `skip_freesurfer` to choose if Freesurfer will be installed
+- `skip_freesurfer`    to choose if Freesurfer will be installed
 
-- Freesurfer license key (3 lines).
+- `freesurfer_lic_*`    Freesurfer license key (3 lines)
  
 See the comments in the config file for details, or to customize other settings.
 
-__Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true` and proceeed to step 4.  (Pycortex will not be able to generate 3D views without Freesurfer.)
+__Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true`, and proceed to step 4.  (Note that Pycortex will not be able to generate 3D views without Freesurfer.)
 
 
 ```ruby

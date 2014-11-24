@@ -1,6 +1,4 @@
-####Additional Notes for GUI use (WIP)
-
-See here for notes using X-windows to access your VM if networking is broken, or other reasons.
+####Additional notes re: GUI VM use, etc (WIP)
 
 ### Extension Pack:
 
@@ -37,20 +35,6 @@ Here is your data folder:
 -------
 ## Install NeuroVault-Puppet
 Think of puppet like an "automation" system - kind of like an image, but more advanced.  I can create a server with my specific configuration, save a puppet module, and then deploy it to new machines.  The environment for NeuroVault is going to be installed similarity, via puppet. Follow the instructions [here](https://github.com/NeuroVault/neurovault_puppet). The server that is mentioned is our Vagrant server.
-
-Make sure that you do the install with sudo, or else you won't be able to create folders and such.  The only errors that I saw were related to puppet modules already being installed.
-
-*Troubleshooting:* 
-If at some point the repository is not clone-able, or if you have trouble, you can always download and unzip.  I tried creating a few virtual machines, and for some reason, I ran into this issue with a different OS (I am not sure why). Here is how to get around it:  
-If you cannot clone the repository, just grab the zip file instead:
-
-    sudo apt-get install unzip
-    wget https://github.com/NeuroVault/neurovault_puppet/archive/master.zip
-    unzip master.zip
-    mv neurovault_puppet /etc/puppet/modules/neurovault
-    cd /etc/puppet/modules/neurovault
-
-I would advise to not move forward if you don't have git working.  It's sort of an essential thing.  Once you do sudo sh do_install.sh, you can go back to working / coding on something else for a while.  It takes a little time to do all the setup.
 
 ---------------------------
 ### Clean Up
