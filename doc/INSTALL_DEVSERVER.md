@@ -35,13 +35,13 @@ Install VirtualBox and Vagrant for your OS:
 
 + _Optional_: Edit the Vagrantfile and customize it to your needs.  (There is usually no need to modify this.)
     -  The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and Rsync).  The options should work on any system that can use Vagrant.
-    - See the detailed comments in the [Vagrantfile](../Vagrantfile.virtualbox) for possible customization options.
+    - See the detailed comments in the [Vagrantfile](../confs/Vagrantfile.virtualbox) for possible customization options.
 
 #### 3. Edit Puppet configuration
 
 Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installation.  Only a few settings require changes:
 
-- `gmail_login_str`    to enable for outgoing mail
+- `gmail_login_str`    to enable outgoing mail on the VM via a Google account.
 
 - `skip_freesurfer`    to choose if Freesurfer will be installed
 
@@ -49,7 +49,7 @@ Edit [confs/nvault.pp](../confs/nvault.pp) to configure NeuroVault for installat
  
 See the comments in the config file for details, or to customize other settings.
 
-__Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true`, and proceed to step 4.  (Note that Pycortex will not be able to generate 3D views without Freesurfer.)
+__Note__:  If you don't need a functional outgoing mailer or Freesurfer, you can simply set `skip_freesurfer => true`, and proceed to step 4.  (Note that Pycortex will not be functional without Freesurfer.)
 
 
 ```ruby
@@ -95,9 +95,10 @@ Vagrant will inform you when the installation is complete.
 
 ##### Accessing the VM:
 
-+ To SSH into your VM, type `vagrant ssh`.
-+ Note:  Everything is done as the `vagrant` user account.
-+ To access the site, go to `http://localhost:8000` in your Host OS browser.
+=> To SSH into your VM, type `vagrant ssh`.
+=> To access the site, go to `http://localhost:8000` in your Host OS browser.
+
+_Note_: Everything is done as the `vagrant` user account, which has has sudo privileges without password.  
 
 ##### File locations:
 
@@ -131,10 +132,10 @@ The system is deployed in basic production configuration by default, with Nginx 
     cd NeuroVault
     ```
 
-+ Start the Dev server:
++ Start the Dev server on port 8080:
 
     ```
-    ./manage.py runserver
+    ./manage.py runserver 0.0.0.0:8080
     ```
 
 + To access the running Dev server, go to `http://localhost:8001` in your Host OS Browser (Port 8001 is used for the devserver, and 8000 is used for Nginx.)
