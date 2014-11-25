@@ -9,13 +9,12 @@ define neurovault::nginx (
   $http_server,
   $private_media_root,
   $private_media_url,
+  $socket_path
 )
 
 {
 
  # config nginx / uwsgi
-
-  $socket_path = "/tmp/neurovault.sock"
 
   class { "uwsgi": }
 
@@ -40,57 +39,9 @@ define neurovault::nginx (
     }
   }
 
-  exec { "set_uwsgi_uid":
-    command => "sed -i.bak 's|uid = www-data|uid = $httpd_user|g' /etc/uwsgi/apps-available/$host_name.ini",
-    onlyif      => "test -f /vagrant/Vagrantfile",
-    path => [ '/bin', '/usr/bin', '/usr/local/bin' ]
-  }
-
-  exec { "set_uwsgi_gid":
-    command => "sed -i.bak 's|gid = www-data|gid = $httpd_user|g' /etc/uwsgi/apps-available/$host_name.ini",
-    onlyif      => "test -f /vagrant/Vagrantfile",
-    path => [ '/bin', '/usr/bin', '/usr/local/bin' ]
-  }
-
-  exec { "set_uwsgi_conf_uidgid":
-    command => "sed -i.bak 's|--uid www-data --gid www-data|--uid $httpd_user --gid $httpd_user|g' /etc/init/uwsgi.conf",
-    onlyif      => "test -f /vagrant/Vagrantfile",
-    path => [ '/bin', '/usr/bin', '/usr/local/bin' ]
-  }
-
-  exec { "nginx_runasuser":
-    command => "sed -i.bak 's|user www-data;|user $httpd_user $httpd_user;|g' /etc/nginx/nginx.conf",
-    onlyif      => "test -f /vagrant/Vagrantfile",
-    path => [ '/bin', '/usr/bin', '/usr/local/bin' ]
-  }
-
   exec { 'set_pycortex_dstore_mask':
     command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
     onlyif      => "test -d $pycortex_datastore",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
-
-  exec { 'set_uwsgi_sock':
-    command     => "chown -R $httpd_user.$httpd_user /var/log/uwsgi/$host_name.log",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
-
-  exec { 'set_uwsgi_sock':
-    command     => "chown -R $httpd_user.$httpd_user /var/log/uwsgi/$host_name.log",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
-
-  exec { 'set_uwsgi_pid':
-    command     => "chown $httpd_user.$httpd_user /tmp/neurovault-uwsgi.pid",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
-
-  exec { 'set_uwsgi_sock':
-    command     => "chown $httpd_user.$httpd_user $socket_path",
     unless      => "test -f /vagrant/Vagrantfile",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   }
