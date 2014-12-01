@@ -30,9 +30,6 @@ neurovault::main { 'nvault-install':
     freesurfer_lic_id => "000000",
     freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
-    # Main OS user- Use an normal unprivileged user account for production
-    system_user => "vagrant",
-
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
     #  http://localhost.  This should be consistent with your host_name (see
     #  below):

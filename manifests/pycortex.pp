@@ -27,7 +27,8 @@ define neurovault::pycortex (
     command => "git clone -b $pycortex_branch $pycortex_repo",
     creates => $pycortex_path,
     user => $system_user,
-    cwd => $pycortex_install_root
+    cwd => $pycortex_install_root,
+	timeout => 2000
   } ->
 
   exec { "build-pycortex":
