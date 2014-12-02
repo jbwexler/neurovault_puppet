@@ -89,10 +89,10 @@ neurovault::main { 'nvault-install':
     bash_config_loc => "/etc/profile.d/freesurfer.sh",
 
     # The location of the NeuroVault git repository:
-    repo_url => "https://github.com/infocortex/NeuroVault.git",
+    repo_url => "https://github.com/NeuroVault/NeuroVault.git",
     # The branch to use, in case you want to test a feature branch from a
     #  fresh install, otherwise always 'master':
-    repo_branch => "enh/collection_sharing",
+    repo_branch => "master",
 
     # Link to the Github repository that contains the NeuroVault default data.
     # Note: the URL is formatted for Github SVN support:
