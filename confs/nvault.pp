@@ -136,7 +136,7 @@ neurovault::main { 'nvault-install':
     freesurfer_installdir => "/opt",
 
     #Pycortex Settings
-    pycortex_repo => "https://github.com/infocortex/pycortex.git",
-    pycortex_branch => "enh/static_options",
+    pycortex_repo => "https://github.com/gallantlab/pycortex.git",
+    pycortex_branch => "master",
     pycortex_datastore => "/opt/pycortex_data",
 }
