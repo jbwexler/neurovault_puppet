@@ -34,15 +34,14 @@ define neurovault::freesurfer (
     } ->
 
     exec { 'dl_freesurfer':
-        command => "wget $freesurfer_dl_path/$freesurfer_src",
-        cwd => $tmp_dir,
-        creates => "$tmp_dir/$freesurfer_src",
+        command => "mkdir -p /var/cache/wget && wget wget -N -P /var/cache/wget $freesurfer_dl_path/$freesurfer_src",
+        creates => "/var/cache/wget/$freesurfer_src",
         timeout => 3600000,
         unless => "test -d $freesurfer_installdir/freesurfer"
     } ->
 
     exec { 'untar_freesurfer':
-        command => "tar zxvf $tmp_dir/$freesurfer_src",
+        command => "tar zxvf /var/cache/wget/$freesurfer_src",
         cwd => $freesurfer_installdir,
         creates => "$freesurfer_installdir/freesurfer"
     } ->
