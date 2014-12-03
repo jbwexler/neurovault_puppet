@@ -26,9 +26,9 @@ neurovault::main { 'nvault-install':
     #  receive in the email are placed into the following variables.  Note
     #  that the actual license string of encrypted characters contains a
     #  leading space.
-    freesurfer_lic_email => "krzysztof.gorgolewski@gmail.com",
-    freesurfer_lic_id => "5172",
-    freesurfer_lic_key => " *CvumvEV3zTfg", # leading space then 13char key.
+    freesurfer_lic_email => "yourname@gmail.com",
+    freesurfer_lic_id => "0000",
+    freesurfer_lic_key => " 0000000000000", # leading space then 13char key.
 
     # The full URL of your Neurovault site, i.e. http://neurovault.org or
     #  http://localhost.  This should be consistent with your host_name (see
