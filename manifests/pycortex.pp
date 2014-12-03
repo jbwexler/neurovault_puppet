@@ -28,7 +28,7 @@ define neurovault::pycortex (
     creates => $pycortex_path,
     user => $system_user,
     cwd => $pycortex_install_root,
-	timeout => 2000
+	timeout => 10000
   } ->
 
   exec { "build-pycortex":
