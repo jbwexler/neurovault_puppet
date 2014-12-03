@@ -51,6 +51,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # I/O APIC must be enabled for multiple CPUs
     vb.customize ["modifyvm", :id, "--ioapic", "on"]
+    
+    # change network parameters to improve performance: http://serverfault.com/questions/447775/virtualbox-slow-upload-speed-using-nat
+    vb.customize ["modifyvm", :id, "--natsettings1", "1500,1024,1024,1024,1024"]
 
     # - set `vb.gui = true` for a windowing system (GUI)
     # - this is useful for debugging networking issues, or if you wish to work
