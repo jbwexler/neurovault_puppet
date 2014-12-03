@@ -20,7 +20,7 @@ Note:  Its not recommended to use this module if you already are using Nginx or 
     
     ```
     sudo su -
-    git clone https://github.com/NeuroVault/neurovault-puppet.git /etc/puppet/modules/neurovault
+    git clone https://github.com/NeuroVault/neurovault_puppet.git /etc/puppet/modules/neurovault
     cd /etc/puppet/modules/neurovault
     ```
 
