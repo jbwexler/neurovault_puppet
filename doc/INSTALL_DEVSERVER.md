@@ -11,6 +11,12 @@ Install VirtualBox and Vagrant for your OS:
 + https://www.vagrantup.com/downloads
 + https://www.virtualbox.org/wiki/Downloads
 
+(Optional) After installing Vagrant install vagrant-cachier which will speed up rebuilding of the VM:
+
+   ```
+   vagrant plugin install vagrant-cachier
+   ```
+
 #### 2. Setup A Vagrant project directory
 + Create, then enter a new directory on your computer (the Host) that will contain your Vagrant project:
 
