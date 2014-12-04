@@ -9,7 +9,8 @@ define neurovault::nginx (
   $http_server,
   $private_media_root,
   $private_media_url,
-  $socket_path
+  $socket_path,
+  $pycortex_datastore
 )
 
 {
