@@ -241,6 +241,7 @@ define neurovault::main (
     http_server => $http_server,
     private_media_root => $private_media_root,
     private_media_url => $private_media_url,
+    pycortex_datastore => $pycortex_datastore,
   } ->
 
   # config database
