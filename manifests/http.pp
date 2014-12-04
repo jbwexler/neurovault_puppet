@@ -9,6 +9,7 @@ define neurovault::http (
   $http_server,
   $private_media_root,
   $private_media_url,
+  $pycortex_datastore,
 )
 
 {
@@ -29,6 +30,7 @@ define neurovault::http (
       private_media_root => $private_media_root,
       private_media_url => $private_media_url,
       socket_path => $socket_path,
+      pycortex_datastore => $pycortex_datastore,
     } ->
 
     neurovault::vagrant { 'conf_vagrant_perms':
@@ -48,6 +50,7 @@ define neurovault::http (
       httpd_user => $httpd_user,
       tmp_dir => $tmp_dir,
       http_server => $http_server,
+      pycortex_datastore => $pycortex_datastore,
     }
 
   }
