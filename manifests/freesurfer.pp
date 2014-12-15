@@ -34,7 +34,7 @@ define neurovault::freesurfer (
     } ->
 
     exec { 'dl_freesurfer':
-        command => "mkdir -p /var/cache/wget && wget wget -N -P /var/cache/wget $freesurfer_dl_path/$freesurfer_src",
+        command => "mkdir -p /var/cache/wget && wget -N -P /var/cache/wget $freesurfer_dl_path/$freesurfer_src",
         creates => "/var/cache/wget/$freesurfer_src",
         timeout => 3600000,
         unless => "test -d $freesurfer_installdir/freesurfer"
