@@ -268,6 +268,15 @@ define neurovault::main (
     gmail_login_str => $gmail_login_str,
   } ->
 
+  # create local settings file
+  file { "$app_path/neurovault/local_settings.py":
+    owner => $system_user,
+    group => $system_user,
+    mode => 644,
+    ensure => present,
+    content => template('neurovault/local_settings.py'),
+  } ->
+
   # install Freesurfer
 
   neurovault::freesurfer { 'install_freesurfer':

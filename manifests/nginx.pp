@@ -38,6 +38,11 @@ define neurovault::nginx (
       "module"           => "neurovault.wsgi",
 
     }
+
+  } ->
+
+  exec { "start_uwsgi":
+    command => "service uwsgi restart"
   }
 
   exec { 'set_pycortex_dstore_mask':

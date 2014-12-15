@@ -97,9 +97,9 @@ define neurovault::freesurfer (
       match => "^\s.{13}$"
     } ->
 
-    # place correct freesurfer path in settings.py
+    # place correct freesurfer path in local_settings.py
     file_line { "freesurfer_home_setting":
-      path  => "$app_path/neurovault/settings.py",
+      path  => "$app_path/neurovault/local_settings.py",
       line  => "os.environ[\"FREESURFER_HOME\"] = \"$freesurfer_installdir/freesurfer\"",
       match => "^os\.environ\[\"FREESURFER_HOME\"\] =.*$",
     } ->

@@ -46,7 +46,7 @@ define neurovault::vagrant (
 
   exec { 'set_uwsgi_sock':
     command     => "chown $httpd_user.$httpd_user $socket_path",
-    onlyif      => "test -f /vagrant/Vagrantfile",
+    onlyif      => ["test -f /vagrant/Vagrantfile","test -f $socket_path"],
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   }
 
