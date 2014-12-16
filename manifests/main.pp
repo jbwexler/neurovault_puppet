@@ -211,7 +211,7 @@ define neurovault::main (
   # Django 1.7 is pretty much required now (migrations, cli scripts)
   file_line { "change_djangoversion_reqs":
     path  => "$tmp_dir/temp_requirements.txt",
-    line  => "Django==1.7",
+    line  => "Django==1.7.1",
     match => "^Django<?>?={0,2}.*$",
   } ->
 
