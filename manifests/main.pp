@@ -211,7 +211,7 @@ define neurovault::main (
   # Django 1.7 is pretty much required now (migrations, cli scripts)
   file_line { "change_djangoversion_reqs":
     path  => "$tmp_dir/temp_requirements.txt",
-    line  => "Django==1.7",
+    line  => "Django==1.7.1",
     match => "^Django<?>?={0,2}.*$",
   } ->
 
@@ -266,6 +266,15 @@ define neurovault::main (
   neurovault::smtpd { 'setup_postfix':
     host_name => $host_name,
     gmail_login_str => $gmail_login_str,
+  } ->
+
+  # create local settings file
+  file { "$app_path/neurovault/local_settings.py":
+    owner => $system_user,
+    group => $system_user,
+    mode => 644,
+    ensure => present,
+    content => template('neurovault/local_settings.py'),
   } ->
 
   # install Freesurfer

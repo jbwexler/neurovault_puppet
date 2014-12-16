@@ -101,13 +101,13 @@ define neurovault::pycortex (
   # configure settings
 
   file_line { "pycortex_datastore_setting":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "PYCORTEX_DATASTORE = '$pycortex_datastore'",
     match => "^PYCORTEX_DATASTORE.*$",
   } ->
 
   file_line { "pycortex_resource_setting":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "    ('pycortex-resources', '$pycortex_path/cortex/webgl/resources'),",
     match => "^\s*\(\'pycortex-resources\',.*$",
   }

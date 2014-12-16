@@ -33,13 +33,13 @@ define neurovault::django (
 
   # config paths for media
   file_line { "private_media_root":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "PRIVATE_MEDIA_ROOT = '$private_media_root'",
     match => "^PRIVATE_MEDIA_ROOT.*$",
   } ->
 
   file_line { "private_media_url":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "PRIVATE_MEDIA_URL = '$private_media_url'",
     match => "^PRIVATE_MEDIA_URL.*$",
   } ->
@@ -47,19 +47,19 @@ define neurovault::django (
   # config db settings
 
   file_line { "db_db_user":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "        'USER': '$db_username',",
     match => "^\s*'USER':\s*'[a-zA-z]*',.*$",
   } ->
 
   file_line { "db_db_name":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "        'NAME': '$db_name',",
     match => "^\s*'NAME':\s*'[a-zA-z]*',.*$",
   } ->
 
   file_line { "db_db_password":
-    path  => "$app_path/neurovault/settings.py",
+    path  => "$app_path/neurovault/local_settings.py",
     line  => "        'PASSWORD': '$db_userpassword',",
     match => "^\s*'PASSWORD':\s*'[a-zA-z]*',.*$",
   } ->
@@ -100,7 +100,7 @@ define neurovault::django (
 
   if $start_debug == 'true' {
       file_line { "set_django_debug":
-        path  => "$app_path/neurovault/settings.py",
+        path  => "$app_path/neurovault/local_settings.py",
         line  => "DEBUG = True",
         match => "^DEBUG =.*$",
       }

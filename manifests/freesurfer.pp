@@ -34,7 +34,7 @@ define neurovault::freesurfer (
     } ->
 
     exec { 'dl_freesurfer':
-        command => "mkdir -p /var/cache/wget && wget wget -N -P /var/cache/wget $freesurfer_dl_path/$freesurfer_src",
+        command => "mkdir -p /var/cache/wget && wget -N -P /var/cache/wget $freesurfer_dl_path/$freesurfer_src",
         creates => "/var/cache/wget/$freesurfer_src",
         timeout => 3600000,
         unless => "test -d $freesurfer_installdir/freesurfer"
@@ -97,9 +97,9 @@ define neurovault::freesurfer (
       match => "^\s.{13}$"
     } ->
 
-    # place correct freesurfer path in settings.py
+    # place correct freesurfer path in local_settings.py
     file_line { "freesurfer_home_setting":
-      path  => "$app_path/neurovault/settings.py",
+      path  => "$app_path/neurovault/local_settings.py",
       line  => "os.environ[\"FREESURFER_HOME\"] = \"$freesurfer_installdir/freesurfer\"",
       match => "^os\.environ\[\"FREESURFER_HOME\"\] =.*$",
     } ->
