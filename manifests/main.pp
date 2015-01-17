@@ -269,6 +269,12 @@ define neurovault::main (
     db_existing_sql => $db_existing_sql,
   } ->
 
+  exec { 'add_nv_createdb':
+    command => "psql -c 'ALTER USER $db_username CREATEDB'",
+    cwd => '/var/lib/postgresql',
+    user => 'postgres',
+  } ->
+
   # config outgoing mailer
 
   neurovault::smtpd { 'setup_postfix':
