@@ -253,10 +253,15 @@ define neurovault::main (
   } ->
 
   # config database
-
+  
+  postgresql::server::role { $db_username:
+     password_hash => postgresql_password($db_username, $db_userpassword),
+     createdb  => true
+  } ->
+  
   postgresql::server::db { $db_name:
     user => $db_username,
-    password => $db_userpassword
+    password => postgresql_password($db_username, $db_userpassword)
   } ->
 
   neurovault::database { 'setup_db':

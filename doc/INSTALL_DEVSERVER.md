@@ -102,7 +102,7 @@ Vagrant will inform you when the installation is complete.
 ##### Accessing the VM:
 
 => To SSH into your VM, type `vagrant ssh`.
-=> To access the site, go to `http://localhost:8000` in your Host OS browser.
+=> To access the site, go to `http://192.168.33.10` in your Host OS browser.
 
 _Note_: Everything is done as the `vagrant` user account, which has has sudo privileges without password.  
 

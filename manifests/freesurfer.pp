@@ -43,7 +43,8 @@ define neurovault::freesurfer (
     exec { 'untar_freesurfer':
         command => "tar zxvf /var/cache/wget/$freesurfer_src",
         cwd => $freesurfer_installdir,
-        creates => "$freesurfer_installdir/freesurfer"
+        creates => "$freesurfer_installdir/freesurfer",
+        timeout => 360000
     } ->
 
     # - add file_lines to bash config
