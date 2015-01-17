@@ -253,12 +253,12 @@ define neurovault::main (
   } ->
 
   # config database
-  
+
   postgresql::server::role { $db_username:
      password_hash => postgresql_password($db_username, $db_userpassword),
      createdb  => true
   } ->
-  
+
   postgresql::server::db { $db_name:
     user => $db_username,
     password => postgresql_password($db_username, $db_userpassword)
@@ -272,12 +272,6 @@ define neurovault::main (
     db_username => $db_username,
     db_userpassword => $db_userpassword,
     db_existing_sql => $db_existing_sql,
-  } ->
-
-  exec { 'add_nv_createdb':
-    command => "psql -c 'ALTER USER $db_username CREATEDB'",
-    cwd => '/var/lib/postgresql',
-    user => 'postgres',
   } ->
 
   # config outgoing mailer
