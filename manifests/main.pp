@@ -37,6 +37,14 @@ define neurovault::main (
   $pycortex_branch,
   $pycortex_datastore,
   $neurovault_data_repo,
+  $provtoolbox_config_loc,
+  $provtoolbox_url,
+  $provtoolbox_filepath,
+  $provtoolbox_zipname,
+  $prov_repo_url,
+  $nidmresults_repo_url,
+  $nidmfsl_repo_url,
+  $nidmfsl_branch,
 )
 
 {
@@ -305,6 +313,20 @@ define neurovault::main (
     pycortex_branch => $pycortex_branch,
     pycortex_datastore => $pycortex_datastore,
     neurovault_data_repo => $neurovault_data_repo,
+  } ->
+
+  # install FEAT support reqs
+  neurovault::feat { 'install_feat_reqs':
+    env_path => $env_path,
+    system_user => $system_user,
+    provtoolbox_config_loc => $provtoolbox_config_loc,
+    provtoolbox_url => $provtoolbox_url,
+    provtoolbox_filepath => $provtoolbox_filepath,
+    provtoolbox_zipname => $provtoolbox_zipname,
+    prov_repo_url => $prov_repo_url,
+    nidmresults_repo_url => $nidmresults_repo_url,
+    nidmfsl_repo_url => $nidmfsl_repo_url,
+    nidmfsl_branch => $nidmfsl_branch,
   } ->
 
   # last, config Django
