@@ -37,6 +37,15 @@ define neurovault::main (
   $pycortex_branch,
   $pycortex_datastore,
   $neurovault_data_repo,
+  $provtoolbox_config_loc,
+  $provtoolbox_url,
+  $provtoolbox_filepath,
+  $provtoolbox_zipname,
+  $prov_repo_url,
+  $nidmresults_repo_url,
+  $nidmresults_branch,
+  $nidmfsl_repo_url,
+  $nidmfsl_branch,
 )
 
 {
@@ -245,12 +254,12 @@ define neurovault::main (
   } ->
 
   # config database
-  
+
   postgresql::server::role { $db_username:
      password_hash => postgresql_password($db_username, $db_userpassword),
      createdb  => true
   } ->
-  
+
   postgresql::server::db { $db_name:
     user => $db_username,
     password => postgresql_password($db_username, $db_userpassword)
@@ -310,6 +319,22 @@ define neurovault::main (
     pycortex_branch => $pycortex_branch,
     pycortex_datastore => $pycortex_datastore,
     neurovault_data_repo => $neurovault_data_repo,
+  } ->
+
+  # install FEAT support reqs
+  neurovault::feat { 'install_feat_reqs':
+    app_path => $app_path,
+    env_path => $env_path,
+    system_user => $system_user,
+    provtoolbox_config_loc => $provtoolbox_config_loc,
+    provtoolbox_url => $provtoolbox_url,
+    provtoolbox_filepath => $provtoolbox_filepath,
+    provtoolbox_zipname => $provtoolbox_zipname,
+    prov_repo_url => $prov_repo_url,
+    nidmresults_branch => $nidmresults_branch,
+    nidmresults_repo_url => $nidmresults_repo_url,
+    nidmfsl_repo_url => $nidmfsl_repo_url,
+    nidmfsl_branch => $nidmfsl_branch,
   } ->
 
   # last, config Django
