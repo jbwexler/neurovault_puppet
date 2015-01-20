@@ -1,4 +1,5 @@
 define neurovault::feat (
+  $app_path,
   $env_path,
   $system_user,
   $provtoolbox_config_loc,
@@ -85,6 +86,14 @@ define neurovault::feat (
     command => "$env_path/bin/python setup.py develop",
     user => $system_user,
     cwd => "$lib_install_root/nidm-results_fsl",
+  } ->
+
+  # provtoolbox exec path
+    file_line { "provtoolbox_file_path":
+      path  => "$app_path/neurovault/local_settings.py",
+      line  => "os.environ[\"PATH\"] += os.pathsep + '$lib_install_root/provToolbox/bin'",
+      match => "^os\.environ\[\"PATH\"\] =.*$",
+
   }
 
 }

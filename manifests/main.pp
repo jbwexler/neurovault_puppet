@@ -322,6 +322,7 @@ define neurovault::main (
 
   # install FEAT support reqs
   neurovault::feat { 'install_feat_reqs':
+    app_path => $app_path,
     env_path => $env_path,
     system_user => $system_user,
     provtoolbox_config_loc => $provtoolbox_config_loc,
