@@ -146,7 +146,8 @@ neurovault::main { 'nvault-install':
     provtoolbox_filepath => "org/openprovenance/prov/toolbox/0.6.1/toolbox-0.6.1-release.zip",
     provtoolbox_zipname => "toolbox-0.6.1-release.zip",
     prov_repo_url => "https://github.com/trungdong/prov.git",
-    nidmresults_repo_url => "https://github.com/incf-nidash/nidmresults.git",
+    nidmresults_repo_url => "https://github.com/chrisfilo/nidmresults.git",
+    nidmresults_branch => "fix/provconvert_call",
     nidmfsl_repo_url => "https://github.com/infocortex/nidm-results_fsl.git",
     nidmfsl_branch => "nv_testdata_fixes",
 }

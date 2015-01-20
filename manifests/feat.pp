@@ -8,6 +8,7 @@ define neurovault::feat (
   $provtoolbox_zipname,
   $prov_repo_url,
   $nidmresults_repo_url,
+  $nidmresults_branch,
   $nidmfsl_repo_url,
   $nidmfsl_branch,
 )
@@ -61,7 +62,7 @@ define neurovault::feat (
   } ->
 
   exec { "clone-nidmresults":
-    command => "git clone $nidmresults_repo_url",
+    command => "git clone -b $nidmresults_branch $nidmresults_repo_url",
     creates => "$lib_install_root/nidmresults",
     user => $system_user,
     cwd => $lib_install_root,

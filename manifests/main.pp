@@ -43,6 +43,7 @@ define neurovault::main (
   $provtoolbox_zipname,
   $prov_repo_url,
   $nidmresults_repo_url,
+  $nidmresults_branch,
   $nidmfsl_repo_url,
   $nidmfsl_branch,
 )
@@ -330,6 +331,7 @@ define neurovault::main (
     provtoolbox_filepath => $provtoolbox_filepath,
     provtoolbox_zipname => $provtoolbox_zipname,
     prov_repo_url => $prov_repo_url,
+    nidmresults_branch => $nidmresults_branch,
     nidmresults_repo_url => $nidmresults_repo_url,
     nidmfsl_repo_url => $nidmfsl_repo_url,
     nidmfsl_branch => $nidmfsl_branch,
