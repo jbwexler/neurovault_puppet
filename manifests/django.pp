@@ -76,8 +76,8 @@ define neurovault::django (
 
   # move existing archives of media, fix permissions
 
-  exec { 'move_private_media':
-    command     => "mv $private_media_existing $private_media_root",
+  exec { 'copy_private_media':
+    command     => "cp -R $private_media_existing $private_media_root",
     onlyif      => ["test -d $private_media_existing","test ! -d $private_media_root"],
     path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
