@@ -46,6 +46,7 @@ define neurovault::main (
   $nidmresults_branch,
   $nidmfsl_repo_url,
   $nidmfsl_branch,
+  $redis_apt_repo,
 )
 
 {
@@ -289,6 +290,7 @@ define neurovault::main (
     mode => 644,
     ensure => present,
     content => template('neurovault/local_settings.py'),
+    replace => false,
   } ->
 
   # install Freesurfer
@@ -335,6 +337,11 @@ define neurovault::main (
     nidmresults_repo_url => $nidmresults_repo_url,
     nidmfsl_repo_url => $nidmfsl_repo_url,
     nidmfsl_branch => $nidmfsl_branch,
+  } ->
+
+  # set up Celery and Redis for task management
+  neurovault::celery { 'install_celery_redis':
+    redis_apt_repo => $redis_apt_repo,
   } ->
 
   # last, config Django

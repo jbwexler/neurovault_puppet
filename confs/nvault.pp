@@ -150,4 +150,8 @@ neurovault::main { 'nvault-install':
     nidmresults_branch => "fix/provconvert_call",
     nidmfsl_repo_url => "https://github.com/infocortex/nidm-results_fsl.git",
     nidmfsl_branch => "nv_testdata_fixes",
+
+    # Celery Config
+    redis_apt_repo => "ppa:chris-lea/redis-server",
+
 }
