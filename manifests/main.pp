@@ -342,6 +342,8 @@ define neurovault::main (
   # set up Celery and Redis for task management
   neurovault::celery { 'install_celery_redis':
     redis_apt_repo => $redis_apt_repo,
+    env_path => $env_path,
+    system_user => $system_user,
   } ->
 
   # last, config Django
