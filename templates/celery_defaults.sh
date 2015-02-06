@@ -12,7 +12,7 @@ ENV_PYTHON="$CELERYD_VIRTUALENV/bin/python"
 CELERY_BIN="$ENV_PYTHON $CELERYD_CHDIR/manage.py celery"
 
 # Extra command-line arguments to the worker (see celery worker --help)
-CELERYD_OPTS="--concurrency=3 -A neurovault.celery -E -B -Q celery --time-limit=57600 --purge"
+CELERYD_OPTS="--concurrency=2 -A neurovault.celery -E -B -Q celery --time-limit=57600 --purge"
 
 CELERYD_MULTI="$ENV_PYTHON $CELERYD_CHDIR/manage.py celeryd_multi"
 
