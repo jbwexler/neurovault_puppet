@@ -5,13 +5,12 @@ Here are the general steps for restarting an attempt to configure the machine.
 #### Delete (errored) machines
 When the `vagrant up` doesn't work, before you try again, you need to do the following:
 
- - Clear the errored mounts (see below)
- - Stop the machine and destroy it
+Clear the errored mounts (see below), and stop the machine and destroy it
 
       vagrant suspend
       vagrant destroy
 
- - Delete any temporary files
+Delete any temporary files
 
       sudo rm -rf .vagrant/
 
@@ -44,9 +43,10 @@ Mounting the file system requires that the user and group ids in the vagrant fil
 This will lead to an errored install without mounted folders, which is impossible for developing. You have a few options to "workaround" this.
 
 
-### Option1: Mount with bindfs
+### Option 1: Mount with bindfs
 
 Bindfs is a vagrant plugin that can be used to better handle mounting. You would first need to install on your machine:
+
 
       vagrant plugin install vagrant-bindfs
 
