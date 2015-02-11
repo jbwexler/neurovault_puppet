@@ -12,6 +12,10 @@ To deploy a production installation with Puppet standalone, see:
 + **[INSTALL_PRODUCTION.md](doc/INSTALL_PRODUCTION.md)**
 
 
+For troubleshooting install, see:
+
++ **[TROUBLESHOOTING.md](doc/TROUBLESHOOTING.md)**
+
 
 ######Additional Info:
 For information about using your VM with an X-windows GUI, see [here](doc/GUI_NOTES.md).  For information regarding manual installation of Python environment, see see [here](doc/PIP_NOTES.md).
