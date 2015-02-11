@@ -31,70 +31,10 @@ You will see something along the lines of:
 Delete all the lines that were added by vagrant.
 
 
-## Error: /etc/exports: bad anonuid
-
-Mounting the file system requires that the user and group ids in the vagrant file are aligned with yours.  If you get this error:
-
-  ==> default: Preparing to edit /etc/exports. Administrator privileges will be required...
-  [sudo] password for yourname: 
-  nfsd running
-  exportfs: /etc/exports: 7: bad anonuid "anonuid=root"
-
-This will lead to an errored install without mounted folders, which is impossible for developing. You have a few options to "workaround" this.
-
-
-### Option 1: Mount with bindfs
-
-Bindfs is a vagrant plugin that can be used to better handle mounting. You would first need to install on your machine:
-
-
-      vagrant plugin install vagrant-bindfs
-
-
-You would then want to change the mount points in your Vagrantfile to look along these lines (edit paths to where you want to mount on your local machine)
-
-      #  Mount point for puppet modules
-      config.vm.synced_folder "neurovault_puppet", "/mnt/etc/puppet/modules/neurovault", nfs:true, create:true
-      config.bindfs.bind_folder "/mnt/etc/puppet/modules/neurovault", "/etc/puppet/modules/neurovault"
-
-      #  Mount point of neurovault environment
-      config.vm.synced_folder "nv_env", "/mnt/opt/nv_env", nfs:true, create:true
-      config.bindfs.bind_folder "/mnt/opt/nv_env", "/opt/nv_env"
-
-      #  Mount point of image datastore
-      config.vm.synced_folder "image_data", "/mnt/opt/image_data", nfs:true, create:true
-      config.bindfs.bind_folder "/mnt/opt/image_data", "/opt/image_data"
-
-      #  Mount point of pycortex datastore
-      config.vm.synced_folder "pycortex_data", "/mnt/opt/pycortex_data", nfs:true, create:true
-      config.bindfs.bind_folder "/mnt/opt/pycortex_data", "/opt/pycortex_data"
-
-
-Note that when you setup the server, there will be a message that bindfs is not installed, but it seems to install automatically.
-
-### Option 2: Change the uid to numbers
-
-The other option is to change the current setup, where it specifies user and group ids as `root` and `wheel` to ids that correspond with your user.  For example, here is what the default looks like:
-
-      config.vm.synced_folder "neurovault_puppet", "/etc/puppet/modules/neurovault", type:"nfs", create:true, map_uid: 'root', map_gid: 'wheel' 
-
-This seems to work well on Mac, but it did not work for some of our testers on linux (Ubuntu).  The workaround that did was looking up the user ids:
-
-      $ id vanessa
-      uid=1000(vanessa) gid=1000(vanessa) groups=1000(vanessa),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),108(lpadmin),124(sambashare)
-      $ id root
-      uid=0(root) gid=0(root) groups=0(root)
-
-And then changing the line to:
-
-      config.vm.synced_folder "neurovault_puppet", "/etc/puppet/modules/neurovault", type:"nfs", create:true, map_uid: '10000', map_gid: '10000'
-
-
 ## Uwsgi and nginx errors
 The server should be active on your local machine at `192.168.33.10`, but sometimes you will get server errors and an ugly white screen.  It is good practice to always restart these servers with any changes, as this is a common fix to the problem:
 
       sudo service uwsgi restart
-      sudo service nginx restart
 
 If you need to debug, logs can be found at `/var/log/nginx' and '/var/log/uwsgi'. I'm not sure if this is useful, but sometimes deleting the neurovault.sock (and having a new one get generated) can help fix issues. I couldn't get it to delete, but moving seemed to work:
 
@@ -120,19 +60,19 @@ And going to localhost:8080 (or whatever port you have specified) will show the 
 
 
 ## Celery Errors
-You should first see if you have celery, period
 
-      which celery
-      /usr/local/bin/celery
-
-Is it running?
-
-      celery status
-
-And make sure that you also have the redis server working:
+Make sure that you also have the redis server working:
 
       redis-cli ping
       PONG
+      
+Count jobs in celery:
+
+      redis-cli llen celery
+      
+Check celery logs:
+
+     cat /var/log/neurovault-tasks/celery.log
 
 You can then try restarting celery and the tasks:
 
@@ -154,7 +94,7 @@ The similarity metric needs to be added manually, so if you have not done this, 
 You should add it! You can open up a shell using manage.py, and copy the code from `scripts/add_pearson_similarity_metric.py`
 
       manage.py shell
-      [copied code from scripts/add_pearson_similarity_metric
+      >%run scripts/add_pearson_similarity_metric
 
 
 ## NeuroVault missing relations, etc.

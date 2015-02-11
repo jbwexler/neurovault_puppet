@@ -11,6 +11,12 @@ Install VirtualBox and Vagrant for your OS:
 + https://www.vagrantup.com/downloads
 + https://www.virtualbox.org/wiki/Downloads
 
+Install plugin for managing NFS permissions (if you want to use default settings)
+
+   ```
+   vagrant plugin install vagrant-bindfs
+   ```
+
 (Optional) After installing Vagrant install vagrant-cachier which will speed up rebuilding of the VM:
 
    ```
