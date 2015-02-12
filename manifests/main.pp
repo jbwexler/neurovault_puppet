@@ -339,13 +339,6 @@ define neurovault::main (
     nidmfsl_branch => $nidmfsl_branch,
   } ->
 
-  # set up Celery and Redis for task management
-  neurovault::celery { 'install_celery_redis':
-    redis_apt_repo => $redis_apt_repo,
-    env_path => $env_path,
-    system_user => $system_user,
-  } ->
-
   # last, config Django
 
   neurovault::django  { 'django_appsetup':
@@ -368,6 +361,13 @@ define neurovault::main (
     private_media_url => $private_media_url,
     private_media_existing => $private_media_existing,
   } ->
+  
+  # set up Celery and Redis for task management
+  neurovault::celery { 'install_celery_redis':
+    redis_apt_repo => $redis_apt_repo,
+    env_path => $env_path,
+    system_user => $system_user,
+  } ->
 
   # restart daemons
 
@@ -378,5 +378,7 @@ define neurovault::main (
   exec { "restart_nginx":
     command => "service nginx restart"
   }
+  
+  
 
 }
