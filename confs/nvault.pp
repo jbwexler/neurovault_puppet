@@ -153,5 +153,9 @@ neurovault::main { 'nvault-install':
 
     # Celery Config
     redis_apt_repo => "ppa:chris-lea/redis-server",
+    
+    # Fixture Settings
+    prepopulate_dev_db => "true",
+    
 
 }

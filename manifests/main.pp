@@ -47,6 +47,7 @@ define neurovault::main (
   $nidmfsl_repo_url,
   $nidmfsl_branch,
   $redis_apt_repo,
+  $prepopulate_dev_db,
 )
 
 {
@@ -360,6 +361,7 @@ define neurovault::main (
     private_media_root => $private_media_root,
     private_media_url => $private_media_url,
     private_media_existing => $private_media_existing,
+    prepopulate_dev_db => $prepopulate_dev_db,
   } ->
   
   # set up Celery and Redis for task management

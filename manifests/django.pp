@@ -104,6 +104,19 @@ define neurovault::django (
         line  => "DEBUG = True",
         match => "^DEBUG =.*$",
       }
+  # download fixtures and use them to populate db
+  
+  if $prepopulate_dev_db == 'true' {
+  	exec { 'download_fixtures':
+  		command		=> "./manage.py download_fixtures"
+  	}
+  	exec { 'loaddata':
+  		command		=> "./manage.py loaddata users1 statmaps1"
+  	}
+  	exec { 'collectmedia':
+  		command		=> "./manage.py collectmedia"
+  	}
+  	
   }
 
-}
+ }
