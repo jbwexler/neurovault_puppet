@@ -46,7 +46,7 @@ Install plugin for managing NFS permissions (if you want to use default settings
     ```
 
 + _Optional_: Edit the Vagrantfile and customize it to your needs.  (There is usually no need to modify this.)
-    -  The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and Rsync).  The options should work on any system that can use Vagrant.
+    -  The default config will use the simplest networking and file sharing option available for VirtualBox (Port Forwarding, and NFS).  The options should work on most systems that can use Vagrant and provide reasonable performance.
     - See the detailed comments in the [Vagrantfile](../confs/Vagrantfile.virtualbox) for possible customization options.
 
 #### 3. Edit Puppet configuration

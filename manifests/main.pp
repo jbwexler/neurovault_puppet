@@ -191,7 +191,8 @@ define neurovault::main (
     command => "git clone -b $repo_branch $repo_url",
     creates => "$app_path",
     user => $system_user,
-    cwd => $env_path
+    cwd => $env_path,
+    timeout => 0
   } ->
 
   python::pip { 'numpy':
@@ -211,6 +212,7 @@ define neurovault::main (
   # Temp: comment pycortex from requirements, we build it manually,
   # since the pypi packaging/dependency resolution is broken (like numpy,scipy, etc)
   file { "$tmp_dir/temp_requirements.txt":
+    require => Exec["clone-nv-app"],
     owner => $system_user,
     group => $system_user,
     mode => 644,
@@ -218,24 +220,20 @@ define neurovault::main (
     source => "$app_path/requirements.txt",
   } ->
 
-  # Django 1.7 is pretty much required now (migrations, cli scripts)
-  file_line { "change_djangoversion_reqs":
-    path  => "$tmp_dir/temp_requirements.txt",
-    line  => "Django==1.7.1",
-    match => "^Django<?>?={0,2}.*$",
-  } ->
-
   file_line { "comment_pycortex_from_reqs":
     path  => "$tmp_dir/temp_requirements.txt",
-    line  => "#pycortex",
+    line  => " ",
     match => "^#?pycortex$",
   } ->
-
-  python::requirements { "$tmp_dir/temp_requirements.txt":
-    virtualenv => $env_path,
-    owner => $system_user,
-    group => $system_user,
-    forceupdate => true,
+  
+  # we install packages one by one in the order they are in requirements.txt to work around missing dependencies in some of the packages
+  exec { 'install requirements.txt':
+        command => "cat $tmp_dir/temp_requirements.txt | xargs -n 1 -L 1 -I{} $env_path/bin/pip install '{}'",
+    	user => $system_user,
+    	group => $system_user,
+        provider => "shell",
+        timeout => 0,
+        logoutput => true
   } ->
 
   # Set up HTTP and WSGI

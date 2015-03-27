@@ -63,8 +63,13 @@ define neurovault::django (
     line  => "        'PASSWORD': '$db_userpassword',",
     match => "^\s*'PASSWORD':\s*'[a-zA-z]*',.*$",
   } ->
-
-  # collect static
+  
+   exec { 'migrate':
+    command         => "$env_path/bin/python $app_path/manage.py migrate",
+    user            => $system_user,
+    cwd             => $app_path,
+    path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+  } ->
 
   exec { 'collect_staticfiles':
     command         => "$env_path/bin/python $app_path/manage.py collectstatic --noinput",
@@ -73,7 +78,7 @@ define neurovault::django (
     onlyif          => "test ! -d $app_path/neurovault/static",
     path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
-
+  
   # move existing archives of media, fix permissions
 
   exec { 'copy_private_media':
@@ -82,12 +87,12 @@ define neurovault::django (
     path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
   } ->
 
-  exec { 'chown_private_media':
-    command     => "chown -R $httpd_user.$httpd_user $private_media_root",
-    onlyif      => "test -d $private_media_root",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  } ->
+#  exec { 'chown_private_media':
+#    command     => "chown -R $httpd_user.$httpd_user $private_media_root",
+#    onlyif      => "test -d $private_media_root",
+#    unless      => "test -f /vagrant/Vagrantfile",
+#    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+#  } ->
 
   # create media dirs (when no existing data was moved)
 
