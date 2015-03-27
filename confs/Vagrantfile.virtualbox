@@ -33,17 +33,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   you will overwrite the installation.
   ###
 
-	  # mount point of Puppet module (Mandatory)
-	  config.vm.synced_folder "neurovault_puppet", "/etc/puppet/modules/neurovault", type:"nfs", create:true, map_uid: 'root', map_gid: 'wheel'
-	
-	  # mount point of Python virtualenv, including source code
-	  config.vm.synced_folder "nv_env", "/opt/nv_env", type:"nfs", create:true, map_uid: 'root', map_gid: 'wheel'
-	
-	  #  Mount point of images directory
-	  config.vm.synced_folder "image_data", "/opt/image_data", type:"nfs", create:true, map_uid: 'root', map_gid: 'wheel'
-	
-	  #  Mount point of pycortex datastore
-	  config.vm.synced_folder "pycortex_data", "/opt/pycortex_data", type:"nfs", create:true, map_uid: 'root', map_gid: 'wheel'
+      #  Mount point for puppet modules
+      config.vm.synced_folder "neurovault_puppet", "/mnt/etc/puppet/modules/neurovault", nfs:true, create:true
+      config.bindfs.bind_folder "/mnt/etc/puppet/modules/neurovault", "/etc/puppet/modules/neurovault"
+
+      #  Mount point of neurovault environment
+      config.vm.synced_folder "nv_env", "/mnt/opt/nv_env", nfs:true, create:true
+      config.bindfs.bind_folder "/mnt/opt/nv_env", "/opt/nv_env"
+
+      #  Mount point of image datastore
+      config.vm.synced_folder "image_data", "/mnt/opt/image_data", nfs:true, create:true
+      config.bindfs.bind_folder "/mnt/opt/image_data", "/opt/image_data"
+
+      #  Mount point of pycortex datastore
+      config.vm.synced_folder "pycortex_data", "/mnt/opt/pycortex_data", nfs:true, create:true
+      config.bindfs.bind_folder "/mnt/opt/pycortex_data", "/opt/pycortex_data"
 
   config.vm.network "private_network", ip: "192.168.33.10"
 

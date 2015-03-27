@@ -28,22 +28,7 @@ define neurovault::database (
                         "sh /etc/puppet/modules/neurovault/tests/database_empty.sh $db_name"],
     path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
     require         => File['pgpass'],
- } ->
-
- notify { 'load_existing':message => "loading existing database from sql dump $db_existing_sql." }
-
- exec { 'django_migrate_empty_db':
-    command         => "$env_path/bin/python $app_path/manage.py migrate",
-    user            => $system_user,
-    cwd             => $app_path,
-    onlyif          => ["test ! -f $db_existing_sql",
-                        "sh /etc/puppet/modules/neurovault/tests/database_empty.sh $db_name"],
-    path            => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-    returns         => [0,1],
-  } ->
-
-  notify { 'generate_new':message => "generating new database, no existing sql dump found." }
-
+ }
 
 
 }

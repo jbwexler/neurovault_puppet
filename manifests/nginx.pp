@@ -45,12 +45,12 @@ define neurovault::nginx (
     command => "service uwsgi restart"
   }
 
-  exec { 'set_pycortex_dstore_mask':
-    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
-    onlyif      => "test -d $pycortex_datastore",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  }
+#  exec { 'set_pycortex_dstore_mask':
+#    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
+#    onlyif      => "test -d $pycortex_datastore",
+#    unless      => "test -f /vagrant/Vagrantfile",
+#    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+#  }
 
   class { 'nginx':  }
 
