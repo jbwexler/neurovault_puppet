@@ -227,8 +227,17 @@ define neurovault::main (
 
   file_line { "comment_pycortex_from_reqs":
     path  => "$tmp_dir/temp_requirements.txt",
-    line  => "#pycortex",
-    match => "^#?pycortex$",
+    line  => " ",
+    match => "git\+https:\/\/github\.com\/gallantlab\/pycortex\.git",
+  } ->
+  
+  exec { 'install libffi-dev':
+        command => "sudo apt-get install libffi-dev",
+    	user => $system_user,
+    	group => $system_user,
+    	provider => "shell",
+        timeout => 0,
+        logoutput => true
   } ->
 
   python::requirements { "$tmp_dir/temp_requirements.txt":
