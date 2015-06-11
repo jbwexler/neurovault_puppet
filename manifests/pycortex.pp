@@ -43,14 +43,15 @@ define neurovault::pycortex (
     command => "svn export --force $neurovault_data_repo/pycortex_datastore $pycortex_datastore",
     creates => "$pycortex_datastore/pycortex",
     path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+    timeout => 0
   } ->
 
-  exec { 'chown_datastore':
-    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
-    onlyif      => "test -d $pycortex_datastore",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  } ->
+#  exec { 'chown_datastore':
+#    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore",
+#    onlyif      => "test -d $pycortex_datastore",
+#    unless      => "test -f /vagrant/Vagrantfile",
+#    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+#  } ->
 
   # create/chown data dirs
 
@@ -91,12 +92,12 @@ define neurovault::pycortex (
   } ->
 
 
-  exec { 'chown_colormaps':
-    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore/colormaps",
-    onlyif      => "test -d $pycortex_datastore/colormaps",
-    unless      => "test -f /vagrant/Vagrantfile",
-    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
-  } ->
+#  exec { 'chown_colormaps':
+#    command     => "chown -R $httpd_user.$httpd_user $pycortex_datastore/colormaps",
+#    onlyif      => "test -d $pycortex_datastore/colormaps",
+#    unless      => "test -f /vagrant/Vagrantfile",
+#    path        => ['/usr/bin','/usr/sbin','/bin','/sbin'],
+#  } ->
 
   # configure settings
 
